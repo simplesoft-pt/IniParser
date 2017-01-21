@@ -8,6 +8,11 @@ namespace SimpleSoft.IniParser.Model
     public sealed class IniContainer
     {
         /// <summary>
+        /// Global comments
+        /// </summary>
+        public ICollection<string> GlobalComments { get; } = new List<string>();
+
+        /// <summary>
         /// Global properties
         /// </summary>
         public ICollection<Property> GlobalProperties { get; } = new List<Property>();
