@@ -9,7 +9,7 @@
     "tags": [ "ini", "parser" ],
     "projectUrl": "https://github.com/gravity00/SimpleSoft.IniParser",
     "licenseUrl": "https://raw.githubusercontent.com/gravity00/SimpleSoft.IniParser/master/LICENSE",
-    "iconUrl": "",
+    "iconUrl": "https://raw.githubusercontent.com/gravity00/SimpleSoft.IniParser/master/tools/SimpleSoft.IniParser.Logo.png",
     "releaseNotes": "",
     "owners": [ "João Simões" ],
     "repository": {
