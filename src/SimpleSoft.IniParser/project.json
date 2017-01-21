@@ -1,0 +1,36 @@
+﻿{
+  "version": "0.1.0",
+  "title": "SimpleSoft.IniParser",
+  "description": "Parser for files and strings in INI format.",
+  "authors": [ "João Simões" ],
+  "copyright": "Copyright © 2016 João Simões",
+  "packOptions": {
+    "summary": "Parser for files and strings in INI format.",
+    "tags": [ "ini", "parser" ],
+    "projectUrl": "https://github.com/gravity00/SimpleSoft.IniParser",
+    "licenseUrl": "https://raw.githubusercontent.com/gravity00/SimpleSoft.IniParser/master/LICENSE",
+    "iconUrl": "",
+    "releaseNotes": "",
+    "owners": [ "João Simões" ],
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/gravity00/SimpleSoft.IniParser.git"
+    }
+  },
+  "buildOptions": {
+    "xmlDoc": true,
+    "optimize": true
+  },
+
+  "dependencies": {
+  },
+
+  "frameworks": {
+    "net4.5": {},
+    "netstandard1.0": {
+      "dependencies": {
+        "NETStandard.Library": "1.6.0"
+      }
+    }
+  }
+}
