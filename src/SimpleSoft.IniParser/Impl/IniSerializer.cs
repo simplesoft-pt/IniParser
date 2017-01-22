@@ -61,7 +61,7 @@ namespace SimpleSoft.IniParser.Impl
                 return string.Empty;
 
             if (Options.NormalizeBeforeSerialization)
-                Normalizer.Normalize(container);
+                container = Normalizer.Normalize(container);
 
             var builder = new StringBuilder();
 
