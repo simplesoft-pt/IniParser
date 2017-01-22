@@ -58,11 +58,7 @@ namespace SimpleSoft.IniParser.Impl
             {
                 foreach (var section in container.Sections)
                 {
-                    builder.Append('[');
-                    builder.Append(section.Name);
-                    builder.AppendLine("]");
-
-                    AppendCommentsAndProperties(builder, section.Comments, section.Properties);
+                    AppendSection(builder, section);
                 }
             }
             else
@@ -71,12 +67,7 @@ namespace SimpleSoft.IniParser.Impl
                 {
                     if(section.Comments.Count == 0 && section.Properties.Count == 0)
                         continue;
-
-                    builder.Append('[');
-                    builder.Append(section.Name);
-                    builder.AppendLine("]");
-
-                    AppendCommentsAndProperties(builder, section.Comments, section.Properties);
+                    AppendSection(builder, section);
                 }
             }
 
@@ -89,7 +80,7 @@ namespace SimpleSoft.IniParser.Impl
         /// </summary>
         /// <param name="container">The container to serialize</param>
         /// <param name="writer">The writer to output the serialization result</param>
-        public void SerializeToStream(IniContainer container, TextWriter writer)
+        public void SerializeToTextWriter(IniContainer container, TextWriter writer)
         {
             if (container == null)
                 throw new ArgumentNullException(nameof(container));
@@ -116,7 +107,7 @@ namespace SimpleSoft.IniParser.Impl
         /// <param name="writer">The writer to output the serialization result</param>
         /// <param name="ct">The cancellation token</param>
         /// <returns>A task to be awaited</returns>
-        public async Task SerializeToStreamAsync(IniContainer container, TextWriter writer, CancellationToken ct = new CancellationToken())
+        public async Task SerializeToTextWriterAsync(IniContainer container, TextWriter writer, CancellationToken ct = new CancellationToken())
         {
             if (container == null)
                 throw new ArgumentNullException(nameof(container));
@@ -128,6 +119,16 @@ namespace SimpleSoft.IniParser.Impl
             await writer.WriteAsync(serializationResult);
 
             await writer.FlushAsync();
+        }
+
+        private void AppendSection(StringBuilder builder, Section section)
+        {
+
+            builder.Append('[');
+            builder.Append(section.Name);
+            builder.AppendLine("]");
+
+            AppendCommentsAndProperties(builder, section.Comments, section.Properties);
         }
 
         private void AppendCommentsAndProperties(
@@ -161,31 +162,5 @@ namespace SimpleSoft.IniParser.Impl
                 }
             }
         }
-    }
-
-    /// <summary>
-    /// INI serialization options
-    /// </summary>
-    public class IniSerializationOptions
-    {
-        /// <summary>
-        /// The character used to represent comments. Defaults to <value>';'</value>.
-        /// </summary>
-        public char CommentIndicator { get; set; } = ';';
-
-        /// <summary>
-        /// The character used delimit name/value properties. Defaults to <value>'='</value>.
-        /// </summary>
-        public char PropertyNameValueDelimiter { get; set; } = '=';
-
-        /// <summary>
-        /// Should properties with empty values be included? Defaults to <value>false</value>.
-        /// </summary>
-        public bool IncludeEmptyProperties { get; set; } = false;
-
-        /// <summary>
-        /// Should sections without comments or properties be included? Defaults to <value>false</value>.
-        /// </summary>
-        public bool IncludeEmptySections { get; set; } = false;
     }
 }

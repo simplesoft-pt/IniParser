@@ -23,7 +23,7 @@ namespace SimpleSoft.IniParser
         /// </summary>
         /// <param name="container">The container to serialize</param>
         /// <param name="writer">The writer to output the serialization result</param>
-        void SerializeToStream(IniContainer container, TextWriter writer);
+        void SerializeToTextWriter(IniContainer container, TextWriter writer);
 
         /// <summary>
         /// Serializes the <see cref="IniContainer"/> into the provided <see cref="StreamWriter"/>
@@ -33,7 +33,7 @@ namespace SimpleSoft.IniParser
         /// <param name="writer">The writer to output the serialization result</param>
         /// <param name="ct">The cancellation token</param>
         /// <returns>A task to be awaited</returns>
-        Task SerializeToStreamAsync(
+        Task SerializeToTextWriterAsync(
             IniContainer container, TextWriter writer, CancellationToken ct = default(CancellationToken));
     }
 }
