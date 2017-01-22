@@ -20,7 +20,7 @@
         /// </summary>
         /// <param name="sectionName">The section name</param>
         /// <param name="propertyName">The duplicated property name</param>
-        public DuplicatedSectionProperty(string sectionName, string propertyName) : base($"The global property '{propertyName}' was found multiple times")
+        public DuplicatedSectionProperty(string sectionName, string propertyName) : base($"The property [{sectionName}].'{propertyName}' was found multiple times")
         {
             SectionName = sectionName;
             PropertyName = propertyName;
