@@ -54,13 +54,30 @@ namespace SimpleSoft.IniParser.Impl
 
             AppendCommentsAndProperties(builder, container.GlobalComments, container.GlobalProperties);
 
-            foreach (var section in container.Sections)
+            if (Options.IncludeEmptySections)
             {
-                builder.Append('[');
-                builder.Append(section.Name);
-                builder.AppendLine("]");
+                foreach (var section in container.Sections)
+                {
+                    builder.Append('[');
+                    builder.Append(section.Name);
+                    builder.AppendLine("]");
 
-                AppendCommentsAndProperties(builder, section.Comments, section.Properties);
+                    AppendCommentsAndProperties(builder, section.Comments, section.Properties);
+                }
+            }
+            else
+            {
+                foreach (var section in container.Sections)
+                {
+                    if(section.Comments.Count == 0 && section.Properties.Count == 0)
+                        continue;
+
+                    builder.Append('[');
+                    builder.Append(section.Name);
+                    builder.AppendLine("]");
+
+                    AppendCommentsAndProperties(builder, section.Comments, section.Properties);
+                }
             }
 
             return builder.ToString();
@@ -87,6 +104,8 @@ namespace SimpleSoft.IniParser.Impl
             //  TODO    Performance tests
             var serializationResult = SerializeAsString(container);
             writer.Write(serializationResult);
+
+            writer.Flush();
         }
 
         /// <summary>
@@ -107,6 +126,8 @@ namespace SimpleSoft.IniParser.Impl
             //  TODO    Performance tests
             var serializationResult = SerializeAsString(container);
             await writer.WriteAsync(serializationResult);
+
+            await writer.FlushAsync();
         }
 
         private void AppendCommentsAndProperties(
@@ -161,5 +182,10 @@ namespace SimpleSoft.IniParser.Impl
         /// Should properties with empty values be included? Defaults to <value>false</value>.
         /// </summary>
         public bool IncludeEmptyProperties { get; set; } = false;
+
+        /// <summary>
+        /// Should sections without comments or properties be included? Defaults to <value>false</value>.
+        /// </summary>
+        public bool IncludeEmptySections { get; set; } = false;
     }
 }
