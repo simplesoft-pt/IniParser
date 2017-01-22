@@ -6,6 +6,12 @@ namespace SimpleSoft.IniParser.Impl
     public class IniSerializationOptions
     {
         /// <summary>
+        /// Should the <see cref="IniContainer"/> be normalized before serialization?
+        /// Defaults to <value>true</value>.
+        /// </summary>
+        public bool NormalizeBeforeSerialization { get; set; } = true;
+
+        /// <summary>
         /// The character used to represent comments. Defaults to <value>';'</value>.
         /// </summary>
         public char CommentIndicator { get; set; } = ';';

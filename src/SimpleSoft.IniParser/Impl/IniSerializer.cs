@@ -16,23 +16,36 @@ namespace SimpleSoft.IniParser.Impl
         /// Creates a new instance.
         /// </summary>
         /// <param name="options">The serialization options</param>
-        public IniSerializer(IniSerializationOptions options)
+        /// <param name="normalizer">The <see cref="IniContainer"/> normalizer to use</param>
+        /// <exception cref="ArgumentNullException"></exception>
+        public IniSerializer(IniSerializationOptions options, IIniNormalizer normalizer)
         {
+            if (options == null)
+                throw new ArgumentNullException(nameof(options));
+            if (normalizer == null)
+                throw new ArgumentNullException(nameof(normalizer));
+
             Options = options;
+            Normalizer = normalizer;
         }
 
         /// <summary>
         /// Creates a new instance.
         /// </summary>
-        public IniSerializer() : this(new IniSerializationOptions())
+        public IniSerializer() : this(new IniSerializationOptions(), new IniNormalizer())
         {
             
         }
 
         /// <summary>
-        /// Serialization options
+        /// Serialization options.
         /// </summary>
         public IniSerializationOptions Options { get; }
+
+        /// <summary>
+        /// The <see cref="IniContainer"/> normalizer.
+        /// </summary>
+        public IIniNormalizer Normalizer { get; }
 
         /// <summary>
         /// Serializes the <see cref="IniContainer"/> as a string in the INI format.
@@ -48,6 +61,9 @@ namespace SimpleSoft.IniParser.Impl
                 container.GlobalProperties.Count == 0 &&
                 container.Sections.Count == 0)
                 return string.Empty;
+
+            if (Options.NormalizeBeforeSerialization)
+                Normalizer.Normalize(container);
 
             var builder = new StringBuilder();
 
@@ -85,11 +101,6 @@ namespace SimpleSoft.IniParser.Impl
                 throw new ArgumentNullException(nameof(container));
             if (writer == null)
                 throw new ArgumentNullException(nameof(writer));
-
-            if (container.GlobalComments.Count == 0 &&
-                container.GlobalProperties.Count == 0 &&
-                container.Sections.Count == 0)
-                return;
 
             //  TODO    Performance tests
             var serializationResult = SerializeAsString(container);
