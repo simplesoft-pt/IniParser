@@ -9,14 +9,16 @@
         /// <summary>
         /// Normalizes the <see cref="IniContainer"/> instance.
         /// </summary>
-        /// <param name="container">The container to normalize</param>
-        void Normalize(IniContainer container);
+        /// <param name="source">The source to normalize</param>
+        /// <returns>The normalized source</returns>
+        IniContainer Normalize(IniContainer source);
 
         /// <summary>
         /// Normalizes the <see cref="IniContainer"/> instance.
         /// </summary>
-        /// <param name="container">The container to normalize</param>
+        /// <param name="source">The source to normalize</param>
+        /// <param name="destination">The normalized source</param>
         /// <returns>True if instance normalized successfully, otherwise false</returns>
-        bool TryNormalize(IniContainer container);
+        bool TryNormalize(IniContainer source, out IniContainer destination);
     }
 }

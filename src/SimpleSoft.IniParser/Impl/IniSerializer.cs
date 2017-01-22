@@ -57,9 +57,7 @@ namespace SimpleSoft.IniParser.Impl
             if (container == null)
                 throw new ArgumentNullException(nameof(container));
 
-            if (container.GlobalComments.Count == 0 &&
-                container.GlobalProperties.Count == 0 &&
-                container.Sections.Count == 0)
+            if (container.IsEmpty)
                 return string.Empty;
 
             if (Options.NormalizeBeforeSerialization)

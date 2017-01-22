@@ -21,5 +21,10 @@ namespace SimpleSoft.IniParser
         /// The ini container sections
         /// </summary>
         public ICollection<IniSection> Sections { get; } = new List<IniSection>();
+
+        /// <summary>
+        /// Is the container empty?
+        /// </summary>
+        public bool IsEmpty => GlobalComments.Count == 0 && GlobalProperties.Count == 0 && Sections.Count == 0;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace SimpleSoft.IniParser.Impl
 {
@@ -12,8 +13,12 @@ namespace SimpleSoft.IniParser.Impl
         /// Creates a new instance.
         /// </summary>
         /// <param name="options">The normalization options</param>
+        /// <exception cref="ArgumentNullException"></exception>
         public IniNormalizer(IniNormalizationOptions options)
         {
+            if (options == null)
+                throw new ArgumentNullException(nameof(options));
+
             Options = options;
         }
 
@@ -33,20 +38,119 @@ namespace SimpleSoft.IniParser.Impl
         /// <summary>
         /// Normalizes the <see cref="IniContainer"/> instance.
         /// </summary>
-        /// <param name="container">The container to normalize</param>
-        public void Normalize(IniContainer container)
+        /// <param name="source">The container to normalize</param>
+        /// <returns>The normalized container</returns>
+        public IniContainer Normalize(IniContainer source)
         {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+
+            var destination = new IniContainer();
+            if (source.IsEmpty)
+                return destination;
+
+            CopyComments(source.GlobalComments, destination.GlobalComments);
+            CopyProperties(source.GlobalProperties, destination.GlobalProperties, "");
+
             throw new NotImplementedException();
         }
 
         /// <summary>
         /// Normalizes the <see cref="IniContainer"/> instance.
         /// </summary>
-        /// <param name="container">The container to normalize</param>
+        /// <param name="source">The container to normalize</param>
+        /// <param name="destination">The normalized container</param>
         /// <returns>True if instance normalized successfully, otherwise false</returns>
-        public bool TryNormalize(IniContainer container)
+        public bool TryNormalize(IniContainer source, out IniContainer destination)
         {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+
+            destination = new IniContainer();
+            if (source.IsEmpty)
+                return true;
+
+            CopyComments(source.GlobalComments, destination.GlobalComments);
+            CopyProperties(source.GlobalProperties, destination.GlobalProperties, ".");
+
             throw new NotImplementedException();
+        }
+
+        private void CopyComments(ICollection<string> origin, ICollection<string> destination)
+        {
+            if(origin.Count == 0)
+                return;
+
+            if (Options.IncludeEmptyComments)
+                foreach (var comment in origin)
+                    destination.Add(comment);
+            else
+            {
+                foreach (var comment in origin)
+                {
+                    if (string.IsNullOrWhiteSpace(comment))
+                        continue;
+                    destination.Add(comment);
+                }
+            }
+        }
+
+        private void CopyProperties(ICollection<IniProperty> origin, ICollection<IniProperty> destination, string sectionName)
+        {
+            if(origin.Count == 0)
+                return;
+
+            //  Preventing LINQ usage and bool validation for each iteration
+            ICollection<IniProperty> itemsToCopy;
+            if (Options.IncludeEmptyProperties)
+            {
+                if (Options.IsCaseSensitive)
+                    itemsToCopy = origin;
+                else
+                {
+                    var tmp = new List<IniProperty>(origin.Count);
+                    foreach (var property in origin)
+                        tmp.Add(new IniProperty(property.Name.ToUpperInvariant(), property.Value));
+                    itemsToCopy = tmp;
+                }
+            }
+            else
+            {
+                var tmp = new List<IniProperty>(origin.Count);
+                if (Options.IsCaseSensitive)
+                {
+                    foreach (var property in origin)
+                    {
+                        if(string.IsNullOrWhiteSpace(property.Value))
+                            continue;
+                        tmp.Add(property);
+                    }
+                }
+                else
+                {
+                    foreach (var property in origin)
+                    {
+                        if (string.IsNullOrWhiteSpace(property.Value))
+                            continue;
+                        tmp.Add(new IniProperty(property.Name.ToUpperInvariant(), property.Value));
+                    }
+                }
+                itemsToCopy = tmp;
+            }
+
+            var dictionary = new Dictionary<string, IniProperty>(origin.Count);
+            if (Options.ReplaceOnDuplicatedProperties)
+                foreach (var property in itemsToCopy)
+                    dictionary[property.Name] = property;
+            else
+            {
+                foreach (var property in itemsToCopy)
+                {
+                    if (dictionary.ContainsKey(property.Name))
+                        throw new Exception("Duplicated key found");
+                    dictionary[property.Name] = property;
+                }
+            }
         }
     }
 }
