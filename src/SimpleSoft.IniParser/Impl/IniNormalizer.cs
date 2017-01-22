@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using SimpleSoft.IniParser.Exceptions;
 
 namespace SimpleSoft.IniParser.Impl
 {
@@ -71,7 +72,7 @@ namespace SimpleSoft.IniParser.Impl
                 return true;
 
             CopyComments(source.GlobalComments, destination.GlobalComments);
-            CopyProperties(source.GlobalProperties, destination.GlobalProperties, ".");
+            CopyProperties(source.GlobalProperties, destination.GlobalProperties);
 
             throw new NotImplementedException();
         }
@@ -95,12 +96,12 @@ namespace SimpleSoft.IniParser.Impl
             }
         }
 
-        private void CopyProperties(ICollection<IniProperty> origin, ICollection<IniProperty> destination, string sectionName)
+        private void CopyProperties(ICollection<IniProperty> origin, ICollection<IniProperty> destination, string sectionName = null)
         {
             if(origin.Count == 0)
                 return;
 
-            //  Preventing LINQ usage and bool validation for each iteration
+            //  Preventing bool validation for each iteration
             ICollection<IniProperty> itemsToCopy;
             if (Options.IncludeEmptyProperties)
             {
@@ -147,10 +148,17 @@ namespace SimpleSoft.IniParser.Impl
                 foreach (var property in itemsToCopy)
                 {
                     if (dictionary.ContainsKey(property.Name))
-                        throw new Exception("Duplicated key found");
+                    {
+                        if (sectionName == null)
+                            throw new DuplicatedGlobalProperty(property.Name);
+                        throw new DuplicatedSectionProperty(sectionName, property.Name);
+                    }
                     dictionary[property.Name] = property;
                 }
             }
+
+            foreach (var value in dictionary.Values)
+                destination.Add(value);
         }
     }
 }
