@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SimpleSoft.IniParser.Model
+namespace SimpleSoft.IniParser
 {
     /// <summary>
     /// Represents an ini container
@@ -15,11 +15,11 @@ namespace SimpleSoft.IniParser.Model
         /// <summary>
         /// Global properties
         /// </summary>
-        public ICollection<Property> GlobalProperties { get; } = new List<Property>();
+        public ICollection<IniProperty> GlobalProperties { get; } = new List<IniProperty>();
 
         /// <summary>
         /// The ini container sections
         /// </summary>
-        public ICollection<Section> Sections { get; } = new List<Section>();
+        public ICollection<IniSection> Sections { get; } = new List<IniSection>();
     }
 }

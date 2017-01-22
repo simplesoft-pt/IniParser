@@ -1,20 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 
-namespace SimpleSoft.IniParser.Model
+namespace SimpleSoft.IniParser
 {
     /// <summary>
-    /// Represents a section
+    /// Represents a property
     /// </summary>
-    public sealed class Section
+    public sealed class IniProperty
     {
         /// <summary>
         /// Creates a new instance
         /// </summary>
-        /// <param name="name">The section name</param>
+        /// <param name="name">The property name</param>
+        /// <param name="value">The property value</param>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentException"></exception>
-        public Section(string name)
+        public IniProperty(string name, string value = null)
         {
             if (name == null)
                 throw new ArgumentNullException(nameof(name));
@@ -22,21 +22,17 @@ namespace SimpleSoft.IniParser.Model
                 throw new ArgumentException("Value cannot be whitespace.", nameof(name));
 
             Name = name;
+            Value = value;
         }
 
         /// <summary>
-        /// The section name
+        /// The property name
         /// </summary>
         public string Name { get; }
 
         /// <summary>
-        /// The section comments
+        /// The property value
         /// </summary>
-        public ICollection<string> Comments { get; } = new List<string>();
-
-        /// <summary>
-        /// The section properties
-        /// </summary>
-        public ICollection<Property> Properties { get; } = new List<Property>();
+        public string Value { get; set; }
     }
 }

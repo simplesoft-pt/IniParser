@@ -4,7 +4,6 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using SimpleSoft.IniParser.Model;
 
 namespace SimpleSoft.IniParser.Impl
 {
@@ -121,7 +120,7 @@ namespace SimpleSoft.IniParser.Impl
             await writer.FlushAsync();
         }
 
-        private void AppendSection(StringBuilder builder, Section section)
+        private void AppendSection(StringBuilder builder, IniSection section)
         {
 
             builder.Append('[');
@@ -132,7 +131,7 @@ namespace SimpleSoft.IniParser.Impl
         }
 
         private void AppendCommentsAndProperties(
-            StringBuilder builder, IEnumerable<string> comments, IEnumerable<Property> properties)
+            StringBuilder builder, IEnumerable<string> comments, IEnumerable<IniProperty> properties)
         {
             foreach (var comment in comments)
             {
