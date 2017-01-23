@@ -29,5 +29,10 @@ namespace SimpleSoft.IniParser.Impl
         /// Replace a duplicated property for the last found value? Defaults to <value>false</value>.
         /// </summary>
         public bool ReplaceOnDuplicatedProperties { get; set; } = false;
+
+        /// <summary>
+        /// Merge duplicated sections into a single one with all properties? Defaults to <value>false</value>.
+        /// </summary>
+        public bool MergeOnDuplicatedSections { get; set; } = false;
     }
 }

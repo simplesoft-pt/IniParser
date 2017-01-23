@@ -51,9 +51,11 @@ namespace SimpleSoft.IniParser.Impl
                 return destination;
 
             CopyComments(source.GlobalComments, destination.GlobalComments);
-            CopyProperties(source.GlobalProperties, destination.GlobalProperties, "");
+            CopyProperties(source.GlobalProperties, destination.GlobalProperties);
 
-            throw new NotImplementedException();
+            CopySections(source.Sections, destination.Sections);
+
+            return destination;
         }
 
         /// <summary>
@@ -67,12 +69,40 @@ namespace SimpleSoft.IniParser.Impl
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
 
-            destination = new IniContainer();
-            if (source.IsEmpty)
+            //  TODO Increase performance by not using exception handling
+            try
+            {
+                destination = Normalize(source);
                 return true;
+            }
+            catch
+            {
+                destination = null;
+                return false;
+            }
+        }
 
-            CopyComments(source.GlobalComments, destination.GlobalComments);
-            CopyProperties(source.GlobalProperties, destination.GlobalProperties);
+        #region Helper methods
+
+        private void CopySections(ICollection<IniSection> origin, ICollection<IniSection> destination)
+        {
+            if(origin.Count == 0)
+                return;
+
+            if (Options.MergeOnDuplicatedSections)
+            {
+
+            }
+            else
+            {
+                if (Options.IsCaseSensitive)
+                {
+                    foreach (var section in origin)
+                    {
+
+                    }
+                }
+            }
 
             throw new NotImplementedException();
         }
@@ -138,7 +168,7 @@ namespace SimpleSoft.IniParser.Impl
                 }
                 itemsToCopy = tmp;
             }
-
+            
             var dictionary = new Dictionary<string, IniProperty>(origin.Count);
             if (Options.ReplaceOnDuplicatedProperties)
                 foreach (var property in itemsToCopy)
@@ -160,5 +190,7 @@ namespace SimpleSoft.IniParser.Impl
             foreach (var value in dictionary.Values)
                 destination.Add(value);
         }
+
+        #endregion
     }
 }
