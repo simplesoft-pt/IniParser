@@ -1,0 +1,21 @@
+﻿{
+  "version": "0.0.0-*",
+  "testRunner": "xunit",
+
+  "dependencies": {
+    "dotnet-test-xunit": "2.2.0-preview2-build1029",
+    "SimpleSoft.IniParser": { "target": "project" },
+    "xunit": "2.2.0-beta5-build3474"
+  },
+
+  "frameworks": {
+    "netcoreapp1.1": {
+      "dependencies": {
+        "Microsoft.NETCore.App": {
+          "type": "platform",
+          "version": "1.1.0"
+        }
+      }
+    }
+  }
+}
