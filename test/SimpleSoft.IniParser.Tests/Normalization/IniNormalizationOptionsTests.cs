@@ -46,5 +46,12 @@ namespace SimpleSoft.IniParser.Tests.Normalization
             var options = new IniNormalizationOptions();
             Assert.False(options.MergeOnDuplicatedSections);
         }
+
+        [Fact]
+        public void GivenANormalizationOptionsInstanceUsingTheDefaultConstrutorThenIgnoreErrorsMustBeFalse()
+        {
+            var options = new IniNormalizationOptions();
+            Assert.False(options.IgnoreErrors);
+        }
     }
 }

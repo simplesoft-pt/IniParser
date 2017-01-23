@@ -77,7 +77,7 @@ namespace SimpleSoft.IniParser.Impl
             CopyComments(source.GlobalComments, destination.GlobalComments);
             CopyProperties(source.GlobalProperties, destination.GlobalProperties);
 
-            CopySections(source.Sections, destination.Sections);
+            //CopySections(source.Sections, destination.Sections);
 
             return destination;
         }
@@ -201,7 +201,7 @@ namespace SimpleSoft.IniParser.Impl
             {
                 foreach (var property in itemsToCopy)
                 {
-                    if (dictionary.ContainsKey(property.Name))
+                    if (dictionary.ContainsKey(property.Name) && !Options.IgnoreErrors)
                     {
                         if (sectionName == null)
                             throw new DuplicatedGlobalProperty(property.Name);

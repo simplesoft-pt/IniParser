@@ -57,5 +57,10 @@ namespace SimpleSoft.IniParser.Impl
         /// Merge duplicated sections into a single one with all properties? Defaults to <value>false</value>.
         /// </summary>
         public bool MergeOnDuplicatedSections { get; set; } = false;
+
+        /// <summary>
+        /// Ignore errors? Defaults to <value>false</value>.
+        /// </summary>
+        public bool IgnoreErrors { get; set; } = false;
     }
 }
