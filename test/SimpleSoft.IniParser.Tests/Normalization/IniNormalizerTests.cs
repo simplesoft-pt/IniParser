@@ -33,7 +33,25 @@ namespace SimpleSoft.IniParser.Tests.Normalization
             Assert.False(allComments.Any(string.IsNullOrWhiteSpace));
         }
 
-        private static IIniNormalizer BuildNormalizerIgnoringErrors()
+        [Fact]
+        public void GivenANormalizerWithIncludeEmptyCommentsOptionThenEmptyCommentsAreRemoved()
+        {
+            var container = BuildNonNormalizedContainer();
+            var normalizer = BuildNormalizerIgnoringErrors();
+            normalizer.Options.IncludeEmptyComments = true;
+
+            var normalizedContainer = normalizer.Normalize(container);
+
+            var allComments = new List<string>(normalizedContainer.GlobalComments);
+            foreach (var section in normalizedContainer.Sections)
+            {
+                allComments.AddRange(section.Comments);
+            }
+
+            Assert.True(allComments.Any(string.IsNullOrWhiteSpace));
+        }
+
+        private static IniNormalizer BuildNormalizerIgnoringErrors()
         {
             return new IniNormalizer {Options = {IgnoreErrors = true}};
         }
