@@ -27,6 +27,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{912CE5EA-09EB-433C-ABC7-22E1D9322C03}"
 	ProjectSection(SolutionItems) = preProject
 		tools\SimpleSoft.IniParser.Logo.png = tools\SimpleSoft.IniParser.Logo.png
+		tools\SimpleSoft.IniParser.PublicKey = tools\SimpleSoft.IniParser.PublicKey
+		tools\SimpleSoft.IniParser.snk = tools\SimpleSoft.IniParser.snk
 	EndProjectSection
 EndProject
 Global
