@@ -62,5 +62,10 @@ namespace SimpleSoft.IniParser
         /// The section properties
         /// </summary>
         public ICollection<IniProperty> Properties { get; } = new List<IniProperty>();
+
+        /// <summary>
+        /// Is the section empty?
+        /// </summary>
+        public bool IsEmpty => Comments.Count == 0 && Properties.Count == 0;
     }
 }
