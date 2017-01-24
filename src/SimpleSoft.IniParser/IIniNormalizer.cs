@@ -43,5 +43,20 @@ namespace SimpleSoft.IniParser
         /// <param name="destination">The normalized source</param>
         /// <returns>True if instance normalized successfully, otherwise false</returns>
         bool TryNormalize(IniContainer source, out IniContainer destination);
+
+        /// <summary>
+        /// Normalizes the <see cref="IniSection"/> instance.
+        /// </summary>
+        /// <param name="source">The section to normalize</param>
+        /// <returns>The normalized section</returns>
+        IniSection Normalize(IniSection source);
+
+        /// <summary>
+        /// Normalizes the <see cref="IniSection"/> instance.
+        /// </summary>
+        /// <param name="source">The section to normalize</param>
+        /// <param name="destination">The normalized section</param>
+        /// <returns>True if instance normalized successfully, otherwise false</returns>
+        bool TryNormalize(IniSection source, out IniSection destination);
     }
 }

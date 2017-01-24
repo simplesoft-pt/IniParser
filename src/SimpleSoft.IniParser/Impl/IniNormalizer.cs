@@ -106,6 +106,41 @@ namespace SimpleSoft.IniParser.Impl
             }
         }
 
+        /// <summary>
+        /// Normalizes the <see cref="IniSection"/> instance.
+        /// </summary>
+        /// <param name="source">The section to normalize</param>
+        /// <returns>The normalized section</returns>
+        public IniSection Normalize(IniSection source)
+        {
+
+            return null;
+        }
+
+        /// <summary>
+        /// Normalizes the <see cref="IniSection"/> instance.
+        /// </summary>
+        /// <param name="source">The section to normalize</param>
+        /// <param name="destination">The normalized section</param>
+        /// <returns>True if instance normalized successfully, otherwise false</returns>
+        public bool TryNormalize(IniSection source, out IniSection destination)
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+
+            //  TODO Increase performance by not using exception handling
+            try
+            {
+                destination = Normalize(source);
+                return true;
+            }
+            catch
+            {
+                destination = null;
+                return false;
+            }
+        }
+
         #region Helper methods
 
         private void CopySections(ICollection<IniSection> origin, ICollection<IniSection> destination)
