@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using SimpleSoft.IniParser.Exceptions;
 
 namespace SimpleSoft.IniParser.Impl
@@ -170,7 +171,82 @@ namespace SimpleSoft.IniParser.Impl
         /// <inheritdoc />
         public void NormalizeInto(IEnumerable<IniProperty> source, ICollection<IniProperty> destination)
         {
-            throw new NotImplementedException();
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+            if (destination == null)
+                throw new ArgumentNullException(nameof(destination));
+
+            if (Options.IncludeEmptyProperties)
+                source = source.Where(e => !string.IsNullOrWhiteSpace(e.Value));
+
+            var itemsToCopy = Options.IsCaseSensitive
+                ? source.Select(e => new IniProperty(e.Name, e.Value))
+                : source.Select(e => new IniProperty(e.Name.ToUpperInvariant(), e.Value));
+
+            var dictionary = new Dictionary<string, IniProperty>();
+            foreach (var property in itemsToCopy)
+            {
+                
+            }
+
+            //  Preventing bool validation for each iteration
+            //ICollection<IniProperty> itemsToCopy;
+            //if (Options.IncludeEmptyProperties)
+            //{
+            //    if (Options.IsCaseSensitive)
+            //        itemsToCopy = origin;
+            //    else
+            //    {
+            //        var tmp = new List<IniProperty>(origin.Count);
+            //        foreach (var property in origin)
+            //            tmp.Add(new IniProperty(property.Name.ToUpperInvariant(), property.Value));
+            //        itemsToCopy = tmp;
+            //    }
+            //}
+            //else
+            //{
+            //    var tmp = new List<IniProperty>(origin.Count);
+            //    if (Options.IsCaseSensitive)
+            //    {
+            //        foreach (var property in origin)
+            //        {
+            //            if(string.IsNullOrWhiteSpace(property.Value))
+            //                continue;
+            //            tmp.Add(property);
+            //        }
+            //    }
+            //    else
+            //    {
+            //        foreach (var property in origin)
+            //        {
+            //            if (string.IsNullOrWhiteSpace(property.Value))
+            //                continue;
+            //            tmp.Add(new IniProperty(property.Name.ToUpperInvariant(), property.Value));
+            //        }
+            //    }
+            //    itemsToCopy = tmp;
+            //}
+
+            //var dictionary = new Dictionary<string, IniProperty>(origin.Count);
+            //if (Options.ReplaceOnDuplicatedProperties)
+            //    foreach (var property in itemsToCopy)
+            //        dictionary[property.Name] = property;
+            //else
+            //{
+            //    foreach (var property in itemsToCopy)
+            //    {
+            //        if (dictionary.ContainsKey(property.Name) && !Options.IgnoreErrors)
+            //        {
+            //            if (sectionName == null)
+            //                throw new DuplicatedGlobalProperty(property.Name);
+            //            throw new DuplicatedSectionProperty(sectionName, property.Name);
+            //        }
+            //        dictionary[property.Name] = property;
+            //    }
+            //}
+
+            //foreach (var value in dictionary.Values)
+            //    destination.Add(value);
         }
 
         /// <inheritdoc />
