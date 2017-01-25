@@ -60,7 +60,24 @@ namespace SimpleSoft.IniParser
         /// </summary>
         /// <param name="source">The source collection to normalize</param>
         /// <param name="destination">The destination collection</param>
+        void NormalizeInto(IReadOnlyCollection<IniSection> source, ICollection<IniSection> destination);
+
+        /// <summary>
+        /// Normalizes the collection of <see cref="IniSection"/> into the 
+        /// destination collection.
+        /// </summary>
+        /// <param name="source">The source collection to normalize</param>
+        /// <param name="destination">The destination collection</param>
         void NormalizeInto(IEnumerable<IniSection> source, ICollection<IniSection> destination);
+
+        /// <summary>
+        /// Normalizes the collection of <see cref="IniSection"/> into the 
+        /// destination collection.
+        /// </summary>
+        /// <param name="source">The source collection to normalize</param>
+        /// <param name="destination">The destination collection</param>
+        /// <returns>True if instance normalized successfully, otherwise false</returns>
+        bool TryNormalizeInto(IReadOnlyCollection<IniSection> source, ICollection<IniSection> destination);
 
         /// <summary>
         /// Normalizes the collection of <see cref="IniSection"/> into the 
@@ -86,7 +103,7 @@ namespace SimpleSoft.IniParser
         /// <param name="source">The source to normalize</param>
         /// <param name="destination">The new section with the normalization result</param>
         /// <returns>True if instance normalized successfully, otherwise false</returns>
-        bool Normalize(IniSection source, out IniSection destination);
+        bool TryNormalize(IniSection source, out IniSection destination);
 
         #endregion
 
@@ -98,7 +115,24 @@ namespace SimpleSoft.IniParser
         /// </summary>
         /// <param name="source">The source collection to normalize</param>
         /// <param name="destination">The destination collection</param>
+        void NormalizeInto(IReadOnlyCollection<IniProperty> source, ICollection<IniProperty> destination);
+
+        /// <summary>
+        /// Normalizes the collection of <see cref="IniProperty"/> into the 
+        /// destination collection.
+        /// </summary>
+        /// <param name="source">The source collection to normalize</param>
+        /// <param name="destination">The destination collection</param>
         void NormalizeInto(IEnumerable<IniProperty> source, ICollection<IniProperty> destination);
+
+        /// <summary>
+        /// Normalizes the collection of <see cref="IniProperty"/> into the 
+        /// destination collection.
+        /// </summary>
+        /// <param name="source">The source collection to normalize</param>
+        /// <param name="destination">The destination collection</param>
+        /// <returns>True if instance normalized successfully, otherwise false</returns>
+        bool TryNormalizeInto(IReadOnlyCollection<IniProperty> source, ICollection<IniProperty> destination);
 
         /// <summary>
         /// Normalizes the collection of <see cref="IniProperty"/> into the 
@@ -124,7 +158,7 @@ namespace SimpleSoft.IniParser
         /// <param name="source">The source to normalize</param>
         /// <param name="destination">The new property with the normalization result</param>
         /// <returns>True if instance normalized successfully, otherwise false</returns>
-        bool Normalize(IniProperty source, out IniProperty destination);
+        bool TryNormalize(IniProperty source, out IniProperty destination);
 
         #endregion
     }

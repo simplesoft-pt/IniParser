@@ -62,6 +62,26 @@ namespace SimpleSoft.IniParser
         /// <param name="source">The source to normalize</param>
         /// <returns>The normalized collection</returns>
         public static ICollection<IniSection> Normalize(
+            this IIniNormalizer normalizer, IReadOnlyCollection<IniSection> source)
+        {
+            if (normalizer == null)
+                throw new ArgumentNullException(nameof(normalizer));
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+
+            var destination = new List<IniSection>(source.Count);
+            normalizer.NormalizeInto(source, destination);
+
+            return destination;
+        }
+
+        /// <summary>
+        /// Normalizes the collection of <see cref="IniSection"/>.
+        /// </summary>
+        /// <param name="normalizer">The normalizer to use</param>
+        /// <param name="source">The source to normalize</param>
+        /// <returns>The normalized collection</returns>
+        public static ICollection<IniSection> Normalize(
             this IIniNormalizer normalizer, IEnumerable<IniSection> source)
         {
             if (normalizer == null)
@@ -71,6 +91,23 @@ namespace SimpleSoft.IniParser
             normalizer.NormalizeInto(source, destination);
 
             return destination;
+        }
+
+        /// <summary>
+        /// Normalizes the collection of <see cref="IniSection"/>.
+        /// </summary>
+        /// <param name="normalizer">The normalizer to use</param>
+        /// <param name="source">The source to normalize</param>
+        /// <param name="destination">The normalized collection</param>
+        /// <returns>True if instance normalized successfully, otherwise false</returns>
+        public static bool TryNormalize(
+            this IIniNormalizer normalizer, IReadOnlyCollection<IniSection> source, out ICollection<IniSection> destination)
+        {
+            if (normalizer == null)
+                throw new ArgumentNullException(nameof(normalizer));
+
+            destination = new List<IniSection>(source.Count);
+            return normalizer.TryNormalizeInto(source, destination);
         }
 
         /// <summary>
@@ -101,6 +138,24 @@ namespace SimpleSoft.IniParser
         /// <param name="source">The source to normalize</param>
         /// <returns>The normalized collection</returns>
         public static ICollection<IniProperty> Normalize(
+            this IIniNormalizer normalizer, IReadOnlyCollection<IniProperty> source)
+        {
+            if (normalizer == null)
+                throw new ArgumentNullException(nameof(normalizer));
+
+            var destination = new List<IniProperty>(source.Count);
+            normalizer.NormalizeInto(source, destination);
+
+            return destination;
+        }
+
+        /// <summary>
+        /// Normalizes the collection of <see cref="IniProperty"/>.
+        /// </summary>
+        /// <param name="normalizer">The normalizer to use</param>
+        /// <param name="source">The source to normalize</param>
+        /// <returns>The normalized collection</returns>
+        public static ICollection<IniProperty> Normalize(
             this IIniNormalizer normalizer, IEnumerable<IniProperty> source)
         {
             if (normalizer == null)
@@ -110,6 +165,23 @@ namespace SimpleSoft.IniParser
             normalizer.NormalizeInto(source, destination);
 
             return destination;
+        }
+
+        /// <summary>
+        /// Normalizes the collection of <see cref="IniSection"/>.
+        /// </summary>
+        /// <param name="normalizer">The normalizer to use</param>
+        /// <param name="source">The source to normalize</param>
+        /// <param name="destination">The normalized collection</param>
+        /// <returns>True if instance normalized successfully, otherwise false</returns>
+        public static bool TryNormalize(
+            this IIniNormalizer normalizer, IReadOnlyCollection<IniProperty> source, out ICollection<IniProperty> destination)
+        {
+            if (normalizer == null)
+                throw new ArgumentNullException(nameof(normalizer));
+
+            destination = new List<IniProperty>(source.Count);
+            return normalizer.TryNormalizeInto(source, destination);
         }
 
         /// <summary>

@@ -72,7 +72,8 @@ namespace SimpleSoft.IniParser.Impl
                 return;
 
             CopyComments(source.GlobalComments, destination.GlobalComments);
-            CopyProperties(source.GlobalProperties, destination.GlobalProperties);
+            NormalizeInto(source.GlobalProperties, destination.GlobalProperties);
+            //CopyProperties(source.GlobalProperties, destination.GlobalProperties);
 
             //CopySections(source.Sections, destination.Sections);
         }
@@ -100,9 +101,34 @@ namespace SimpleSoft.IniParser.Impl
         #region IniSection
 
         /// <inheritdoc />
+        public void NormalizeInto(IReadOnlyCollection<IniSection> source, ICollection<IniSection> destination)
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+            if (destination == null)
+                throw new ArgumentNullException(nameof(destination));
+
+            if(source.Count == 0)
+                return;
+
+            NormalizeInto((IEnumerable<IniSection>) source, destination);
+        }
+
+        /// <inheritdoc />
         public void NormalizeInto(IEnumerable<IniSection> source, ICollection<IniSection> destination)
         {
             throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public bool TryNormalizeInto(IReadOnlyCollection<IniSection> source, ICollection<IniSection> destination)
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+            if (destination == null)
+                throw new ArgumentNullException(nameof(destination));
+
+            return source.Count == 0 || TryNormalizeInto((IEnumerable<IniSection>) source, destination);
         }
 
         /// <inheritdoc />
@@ -118,7 +144,7 @@ namespace SimpleSoft.IniParser.Impl
         }
 
         /// <inheritdoc />
-        public bool Normalize(IniSection source, out IniSection destination)
+        public bool TryNormalize(IniSection source, out IniSection destination)
         {
             throw new NotImplementedException();
         }
@@ -128,9 +154,37 @@ namespace SimpleSoft.IniParser.Impl
         #region IniProperty
 
         /// <inheritdoc />
+        public void NormalizeInto(IReadOnlyCollection<IniProperty> source, ICollection<IniProperty> destination)
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+            if (destination == null)
+                throw new ArgumentNullException(nameof(destination));
+
+            if (source.Count == 0)
+                return;
+
+            NormalizeInto((IEnumerable<IniProperty>)source, destination);
+        }
+
+        /// <inheritdoc />
         public void NormalizeInto(IEnumerable<IniProperty> source, ICollection<IniProperty> destination)
         {
             throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public bool TryNormalizeInto(IReadOnlyCollection<IniProperty> source, ICollection<IniProperty> destination)
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+            if (destination == null)
+                throw new ArgumentNullException(nameof(destination));
+
+            if (source.Count == 0)
+                return true;
+
+            return TryNormalizeInto((IEnumerable<IniProperty>)source, destination);
         }
 
         /// <inheritdoc />
@@ -142,40 +196,47 @@ namespace SimpleSoft.IniParser.Impl
         /// <inheritdoc />
         public IniProperty Normalize(IniProperty source)
         {
-            throw new NotImplementedException();
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+
+            var invalidChar = ExtractInvalidCharFromPropertyName(source);
+            if (invalidChar.HasValue)
+                throw new InvalidPropertyNameException(invalidChar.Value, source);
+
+            return Options.IsCaseSensitive
+                ? new IniProperty(source.Name, source.Value)
+                : new IniProperty(source.Name.ToUpperInvariant(), source.Value);
         }
 
         /// <inheritdoc />
-        public bool Normalize(IniProperty source, out IniProperty destination)
+        public bool TryNormalize(IniProperty source, out IniProperty destination)
         {
-            throw new NotImplementedException();
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+
+            var invalidChar = ExtractInvalidCharFromPropertyName(source);
+            if (invalidChar.HasValue)
+            {
+                destination = null;
+                return false;
+            }
+
+            destination = Options.IsCaseSensitive
+                ? new IniProperty(source.Name, source.Value)
+                : new IniProperty(source.Name.ToUpperInvariant(), source.Value);
+            return true;
         }
 
         #endregion
 
         #region Helper methods
 
-        private void CopySections(ICollection<IniSection> origin, ICollection<IniSection> destination)
+        private static char? ExtractInvalidCharFromPropertyName(IniProperty property)
         {
-            if(origin.Count == 0)
-                return;
-
-            if (Options.MergeOnDuplicatedSections)
-            {
-
-            }
-            else
-            {
-                if (Options.IsCaseSensitive)
-                {
-                    foreach (var section in origin)
-                    {
-
-                    }
-                }
-            }
-
-            throw new NotImplementedException();
+            foreach (var c in property.Name)
+                if (c == ' ' || c == '=')
+                    return c;
+            return null;
         }
 
         private void CopyComments(ICollection<string> origin, ICollection<string> destination)
