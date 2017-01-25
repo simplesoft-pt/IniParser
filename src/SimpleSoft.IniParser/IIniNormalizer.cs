@@ -24,39 +24,42 @@
 namespace SimpleSoft.IniParser
 {
     /// <summary>
-    /// Normalizes raw <see cref="IniContainer"/> instances to meet
-    /// the INI standard.
+    /// Ini format normalizer.
     /// </summary>
     public interface IIniNormalizer
     {
         /// <summary>
-        /// Normalizes the <see cref="IniContainer"/> instance.
+        /// Normalizes the <see cref="IniContainer"/> instance storing the 
+        /// result into the destination container.
         /// </summary>
-        /// <param name="source">The source to normalize</param>
-        /// <returns>The normalized source</returns>
-        IniContainer Normalize(IniContainer source);
+        /// <param name="source">The container to normalize</param>
+        /// <param name="destination">The destination container</param>
+        void NormalizeInto(IniContainer source, IniContainer destination);
 
         /// <summary>
-        /// Normalizes the <see cref="IniContainer"/> instance.
+        /// Normalizes the <see cref="IniContainer"/> instance storing the 
+        /// result into the destination container.
         /// </summary>
         /// <param name="source">The source to normalize</param>
         /// <param name="destination">The normalized source</param>
         /// <returns>True if instance normalized successfully, otherwise false</returns>
-        bool TryNormalize(IniContainer source, out IniContainer destination);
+        bool TryNormalizeInto(IniContainer source, IniContainer destination);
 
         /// <summary>
-        /// Normalizes the <see cref="IniSection"/> instance.
+        /// Normalizes the <see cref="IniSection"/> instance storing the 
+        /// result into the destination section.
         /// </summary>
         /// <param name="source">The section to normalize</param>
-        /// <returns>The normalized section</returns>
-        IniSection Normalize(IniSection source);
+        /// <param name="destination">The destination section</param>
+        void NormalizeInto(IniSection source, IniSection destination);
 
         /// <summary>
-        /// Normalizes the <see cref="IniSection"/> instance.
+        /// Normalizes the <see cref="IniSection"/> instance storing the 
+        /// result into the destination section.
         /// </summary>
         /// <param name="source">The section to normalize</param>
         /// <param name="destination">The normalized section</param>
         /// <returns>True if instance normalized successfully, otherwise false</returns>
-        bool TryNormalize(IniSection source, out IniSection destination);
+        bool TryNormalizeInto(IniSection source, IniSection destination);
     }
 }

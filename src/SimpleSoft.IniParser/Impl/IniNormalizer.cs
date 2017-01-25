@@ -61,34 +61,33 @@ namespace SimpleSoft.IniParser.Impl
         public IniNormalizationOptions Options { get; }
 
         /// <summary>
-        /// Normalizes the <see cref="IniContainer"/> instance.
+        /// Normalizes the <see cref="IniContainer"/> instance storing the 
+        /// result into the destination container.
         /// </summary>
         /// <param name="source">The container to normalize</param>
-        /// <returns>The normalized container</returns>
-        public IniContainer Normalize(IniContainer source)
+        /// <param name="destination">The destination container</param>
+        public void NormalizeInto(IniContainer source, IniContainer destination)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
-
-            var destination = new IniContainer();
+            
             if (source.IsEmpty)
-                return destination;
+                return;
 
             CopyComments(source.GlobalComments, destination.GlobalComments);
             CopyProperties(source.GlobalProperties, destination.GlobalProperties);
 
             //CopySections(source.Sections, destination.Sections);
-
-            return destination;
         }
 
         /// <summary>
-        /// Normalizes the <see cref="IniContainer"/> instance.
+        /// Normalizes the <see cref="IniContainer"/> instance storing the 
+        /// result into the destination container.
         /// </summary>
-        /// <param name="source">The container to normalize</param>
-        /// <param name="destination">The normalized container</param>
+        /// <param name="source">The source to normalize</param>
+        /// <param name="destination">The normalized source</param>
         /// <returns>True if instance normalized successfully, otherwise false</returns>
-        public bool TryNormalize(IniContainer source, out IniContainer destination)
+        public bool TryNormalizeInto(IniContainer source, IniContainer destination)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
@@ -96,7 +95,7 @@ namespace SimpleSoft.IniParser.Impl
             //  TODO Increase performance by not using exception handling
             try
             {
-                destination = Normalize(source);
+                NormalizeInto(source, destination);
                 return true;
             }
             catch
@@ -107,23 +106,24 @@ namespace SimpleSoft.IniParser.Impl
         }
 
         /// <summary>
-        /// Normalizes the <see cref="IniSection"/> instance.
+        /// Normalizes the <see cref="IniSection"/> instance storing the 
+        /// result into the destination section.
         /// </summary>
         /// <param name="source">The section to normalize</param>
-        /// <returns>The normalized section</returns>
-        public IniSection Normalize(IniSection source)
+        /// <param name="destination">The destination section</param>
+        public void NormalizeInto(IniSection source, IniSection destination)
         {
-
-            return null;
+            throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Normalizes the <see cref="IniSection"/> instance.
+        /// Normalizes the <see cref="IniSection"/> instance storing the 
+        /// result into the destination section.
         /// </summary>
         /// <param name="source">The section to normalize</param>
         /// <param name="destination">The normalized section</param>
         /// <returns>True if instance normalized successfully, otherwise false</returns>
-        public bool TryNormalize(IniSection source, out IniSection destination)
+        public bool TryNormalizeInto(IniSection source, IniSection destination)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
@@ -131,7 +131,7 @@ namespace SimpleSoft.IniParser.Impl
             //  TODO Increase performance by not using exception handling
             try
             {
-                destination = Normalize(source);
+                NormalizeInto(source, destination);
                 return true;
             }
             catch
