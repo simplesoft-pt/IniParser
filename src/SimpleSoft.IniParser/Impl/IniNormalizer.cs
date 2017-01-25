@@ -60,12 +60,9 @@ namespace SimpleSoft.IniParser.Impl
         /// </summary>
         public IniNormalizationOptions Options { get; }
 
-        /// <summary>
-        /// Normalizes the <see cref="IniContainer"/> instance storing the 
-        /// result into the destination container.
-        /// </summary>
-        /// <param name="source">The container to normalize</param>
-        /// <param name="destination">The destination container</param>
+        #region IniContainer
+
+        /// <inheritdoc />
         public void NormalizeInto(IniContainer source, IniContainer destination)
         {
             if (source == null)
@@ -80,13 +77,7 @@ namespace SimpleSoft.IniParser.Impl
             //CopySections(source.Sections, destination.Sections);
         }
 
-        /// <summary>
-        /// Normalizes the <see cref="IniContainer"/> instance storing the 
-        /// result into the destination container.
-        /// </summary>
-        /// <param name="source">The source to normalize</param>
-        /// <param name="destination">The normalized source</param>
-        /// <returns>True if instance normalized successfully, otherwise false</returns>
+        /// <inheritdoc />
         public bool TryNormalizeInto(IniContainer source, IniContainer destination)
         {
             if (source == null)
@@ -100,46 +91,67 @@ namespace SimpleSoft.IniParser.Impl
             }
             catch
             {
-                destination = null;
                 return false;
             }
         }
 
-        /// <summary>
-        /// Normalizes the <see cref="IniSection"/> instance storing the 
-        /// result into the destination section.
-        /// </summary>
-        /// <param name="source">The section to normalize</param>
-        /// <param name="destination">The destination section</param>
-        public void NormalizeInto(IniSection source, IniSection destination)
+        #endregion
+
+        #region IniSection
+
+        /// <inheritdoc />
+        public void NormalizeInto(IEnumerable<IniSection> source, ICollection<IniSection> destination)
         {
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// Normalizes the <see cref="IniSection"/> instance storing the 
-        /// result into the destination section.
-        /// </summary>
-        /// <param name="source">The section to normalize</param>
-        /// <param name="destination">The normalized section</param>
-        /// <returns>True if instance normalized successfully, otherwise false</returns>
-        public bool TryNormalizeInto(IniSection source, IniSection destination)
+        /// <inheritdoc />
+        public bool TryNormalizeInto(IEnumerable<IniSection> source, ICollection<IniSection> destination)
         {
-            if (source == null)
-                throw new ArgumentNullException(nameof(source));
-
-            //  TODO Increase performance by not using exception handling
-            try
-            {
-                NormalizeInto(source, destination);
-                return true;
-            }
-            catch
-            {
-                destination = null;
-                return false;
-            }
+            throw new NotImplementedException();
         }
+
+        /// <inheritdoc />
+        public IniSection Normalize(IniSection source)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public bool Normalize(IniSection source, out IniSection destination)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region IniProperty
+
+        /// <inheritdoc />
+        public void NormalizeInto(IEnumerable<IniProperty> source, ICollection<IniProperty> destination)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public bool TryNormalizeInto(IEnumerable<IniProperty> source, ICollection<IniProperty> destination)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public IniProperty Normalize(IniProperty source)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public bool Normalize(IniProperty source, out IniProperty destination)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
 
         #region Helper methods
 

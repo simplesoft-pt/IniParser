@@ -1,10 +1,15 @@
-﻿namespace SimpleSoft.IniParser
+﻿using System;
+using System.Collections.Generic;
+
+namespace SimpleSoft.IniParser
 {
     /// <summary>
     /// Extensions for <see cref="IIniNormalizer"/> classes.
     /// </summary>
     public static class NormalizerExtensions
     {
+        #region IniContainer
+
         /// <summary>
         /// Creates a normalized <see cref="IniContainer"/> using the provided one.
         /// </summary>
@@ -13,6 +18,9 @@
         /// <returns>The new container with the normalization result</returns>
         public static IniContainer Normalize(this IIniNormalizer normalizer, IniContainer source)
         {
+            if (normalizer == null)
+                throw new ArgumentNullException(nameof(normalizer));
+
             var destination = new IniContainer();
             normalizer.NormalizeInto(source, destination);
 
@@ -29,6 +37,9 @@
         public static bool TryNormalize(
             this IIniNormalizer normalizer, IniContainer source, out IniContainer destination)
         {
+            if (normalizer == null)
+                throw new ArgumentNullException(nameof(normalizer));
+
             var tmpDestination = new IniContainer();
             if (normalizer.TryNormalizeInto(source, tmpDestination))
             {
@@ -40,39 +51,84 @@
             return false;
         }
 
+        #endregion
+
+        #region IniSection
+
         /// <summary>
-        /// Creates a normalized <see cref="IniSection"/> using the provided one.
+        /// Normalizes the collection of <see cref="IniSection"/>.
         /// </summary>
         /// <param name="normalizer">The normalizer to use</param>
-        /// <param name="source">The section to normalize</param>
-        /// <returns>The new section with the normalization result</returns>
-        public static IniSection Normalize(this IIniNormalizer normalizer, IniSection source)
+        /// <param name="source">The source to normalize</param>
+        /// <returns>The normalized collection</returns>
+        public static ICollection<IniSection> Normalize(
+            this IIniNormalizer normalizer, IEnumerable<IniSection> source)
         {
-            var destination = new IniSection(source.Name);
+            if (normalizer == null)
+                throw new ArgumentNullException(nameof(normalizer));
+
+            var destination = new List<IniSection>();
             normalizer.NormalizeInto(source, destination);
 
             return destination;
         }
 
         /// <summary>
-        /// Creates a normalized <see cref="IniSection"/> using the provided one.
+        /// Normalizes the collection of <see cref="IniSection"/>.
         /// </summary>
         /// <param name="normalizer">The normalizer to use</param>
-        /// <param name="source">The section to normalize</param>
-        /// <param name="destination">The section with the normalization result</param>
+        /// <param name="source">The source to normalize</param>
+        /// <param name="destination">The normalized collection</param>
         /// <returns>True if instance normalized successfully, otherwise false</returns>
         public static bool TryNormalize(
-            this IIniNormalizer normalizer, IniSection source, out IniSection destination)
+            this IIniNormalizer normalizer, IEnumerable<IniSection> source, out ICollection<IniSection> destination)
         {
-            var tmpDestination = new IniSection(source.Name);
-            if (normalizer.TryNormalizeInto(source, tmpDestination))
-            {
-                destination = tmpDestination;
-                return true;
-            }
+            if (normalizer == null)
+                throw new ArgumentNullException(nameof(normalizer));
 
-            destination = null;
-            return false;
+            destination = new List<IniSection>();
+            return normalizer.TryNormalizeInto(source, destination);
         }
+
+        #endregion
+
+        #region IniProperty
+
+        /// <summary>
+        /// Normalizes the collection of <see cref="IniProperty"/>.
+        /// </summary>
+        /// <param name="normalizer">The normalizer to use</param>
+        /// <param name="source">The source to normalize</param>
+        /// <returns>The normalized collection</returns>
+        public static ICollection<IniProperty> Normalize(
+            this IIniNormalizer normalizer, IEnumerable<IniProperty> source)
+        {
+            if (normalizer == null)
+                throw new ArgumentNullException(nameof(normalizer));
+
+            var destination = new List<IniProperty>();
+            normalizer.NormalizeInto(source, destination);
+
+            return destination;
+        }
+
+        /// <summary>
+        /// Normalizes the collection of <see cref="IniSection"/>.
+        /// </summary>
+        /// <param name="normalizer">The normalizer to use</param>
+        /// <param name="source">The source to normalize</param>
+        /// <param name="destination">The normalized collection</param>
+        /// <returns>True if instance normalized successfully, otherwise false</returns>
+        public static bool TryNormalize(
+            this IIniNormalizer normalizer, IEnumerable<IniProperty> source, out ICollection<IniProperty> destination)
+        {
+            if (normalizer == null)
+                throw new ArgumentNullException(nameof(normalizer));
+
+            destination = new List<IniProperty>();
+            return normalizer.TryNormalizeInto(source, destination);
+        }
+
+        #endregion
     }
 }

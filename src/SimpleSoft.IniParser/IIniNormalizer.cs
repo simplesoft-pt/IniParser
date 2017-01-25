@@ -21,6 +21,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 #endregion
+
+using System.Collections.Generic;
+
 namespace SimpleSoft.IniParser
 {
     /// <summary>
@@ -28,6 +31,8 @@ namespace SimpleSoft.IniParser
     /// </summary>
     public interface IIniNormalizer
     {
+        #region IniContainer
+
         /// <summary>
         /// Normalizes the <see cref="IniContainer"/> instance storing the 
         /// result into the destination container.
@@ -45,21 +50,82 @@ namespace SimpleSoft.IniParser
         /// <returns>True if instance normalized successfully, otherwise false</returns>
         bool TryNormalizeInto(IniContainer source, IniContainer destination);
 
-        /// <summary>
-        /// Normalizes the <see cref="IniSection"/> instance storing the 
-        /// result into the destination section.
-        /// </summary>
-        /// <param name="source">The section to normalize</param>
-        /// <param name="destination">The destination section</param>
-        void NormalizeInto(IniSection source, IniSection destination);
+        #endregion
+
+        #region IniSection
 
         /// <summary>
-        /// Normalizes the <see cref="IniSection"/> instance storing the 
-        /// result into the destination section.
+        /// Normalizes the collection of <see cref="IniSection"/> into the 
+        /// destination collection.
         /// </summary>
-        /// <param name="source">The section to normalize</param>
-        /// <param name="destination">The normalized section</param>
+        /// <param name="source">The source collection to normalize</param>
+        /// <param name="destination">The destination collection</param>
+        void NormalizeInto(IEnumerable<IniSection> source, ICollection<IniSection> destination);
+
+        /// <summary>
+        /// Normalizes the collection of <see cref="IniSection"/> into the 
+        /// destination collection.
+        /// </summary>
+        /// <param name="source">The source collection to normalize</param>
+        /// <param name="destination">The destination collection</param>
         /// <returns>True if instance normalized successfully, otherwise false</returns>
-        bool TryNormalizeInto(IniSection source, IniSection destination);
+        bool TryNormalizeInto(IEnumerable<IniSection> source, ICollection<IniSection> destination);
+
+        /// <summary>
+        /// Normalizes the <see cref="IniSection"/> returning
+        /// a new section with the normalization result.
+        /// </summary>
+        /// <param name="source">The source to normalize</param>
+        /// <returns>The new section with the normalization result</returns>
+        IniSection Normalize(IniSection source);
+
+        /// <summary>
+        /// Normalizes the <see cref="IniSection"/> returning
+        /// a new section with the normalization result.
+        /// </summary>
+        /// <param name="source">The source to normalize</param>
+        /// <param name="destination">The new section with the normalization result</param>
+        /// <returns>True if instance normalized successfully, otherwise false</returns>
+        bool Normalize(IniSection source, out IniSection destination);
+
+        #endregion
+
+        #region IniProperty
+
+        /// <summary>
+        /// Normalizes the collection of <see cref="IniProperty"/> into the 
+        /// destination collection.
+        /// </summary>
+        /// <param name="source">The source collection to normalize</param>
+        /// <param name="destination">The destination collection</param>
+        void NormalizeInto(IEnumerable<IniProperty> source, ICollection<IniProperty> destination);
+
+        /// <summary>
+        /// Normalizes the collection of <see cref="IniProperty"/> into the 
+        /// destination collection.
+        /// </summary>
+        /// <param name="source">The source collection to normalize</param>
+        /// <param name="destination">The destination collection</param>
+        /// <returns>True if instance normalized successfully, otherwise false</returns>
+        bool TryNormalizeInto(IEnumerable<IniProperty> source, ICollection<IniProperty> destination);
+
+        /// <summary>
+        /// Normalizes the <see cref="IniProperty"/> returning
+        /// a new property with the normalization result.
+        /// </summary>
+        /// <param name="source">The source to normalize</param>
+        /// <returns>The new property with the normalization result</returns>
+        IniProperty Normalize(IniProperty source);
+
+        /// <summary>
+        /// Normalizes the <see cref="IniProperty"/> returning
+        /// a new property with the normalization result.
+        /// </summary>
+        /// <param name="source">The source to normalize</param>
+        /// <param name="destination">The new property with the normalization result</param>
+        /// <returns>True if instance normalized successfully, otherwise false</returns>
+        bool Normalize(IniProperty source, out IniProperty destination);
+
+        #endregion
     }
 }
