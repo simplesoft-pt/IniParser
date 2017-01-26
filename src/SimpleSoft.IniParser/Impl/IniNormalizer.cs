@@ -385,7 +385,7 @@ namespace SimpleSoft.IniParser.Impl
             {
                 foreach (var property in itemsToCopy)
                 {
-                    if (dictionary.ContainsKey(property.Name) && !Options.IgnoreErrors)
+                    if (dictionary.ContainsKey(property.Name) && !Options.ThrowExceptions)
                     {
                         if (sectionName == null)
                             throw new DuplicatedGlobalProperty(property.Name);

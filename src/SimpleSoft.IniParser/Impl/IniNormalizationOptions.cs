@@ -59,8 +59,8 @@ namespace SimpleSoft.IniParser.Impl
         public bool MergeOnDuplicatedSections { get; set; } = false;
 
         /// <summary>
-        /// Ignore errors? Defaults to <value>false</value>.
+        /// Throw exceptions on errors? Defaults to <value>true</value>.
         /// </summary>
-        public bool IgnoreErrors { get; set; } = false;
+        public bool ThrowExceptions { get; set; } = true;
     }
 }

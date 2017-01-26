@@ -53,7 +53,7 @@ namespace SimpleSoft.IniParser.Tests.Normalization
 
         private static IniNormalizer BuildNormalizerIgnoringErrors()
         {
-            return new IniNormalizer {Options = {IgnoreErrors = true}};
+            return new IniNormalizer {Options = {ThrowExceptions = true}};
         }
 
         private static IniContainer BuildNonNormalizedContainer()
