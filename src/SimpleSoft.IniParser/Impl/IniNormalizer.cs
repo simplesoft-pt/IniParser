@@ -114,7 +114,44 @@ namespace SimpleSoft.IniParser.Impl
         /// <inheritdoc />
         public void NormalizeInto(IEnumerable<IniSection> source, ICollection<IniSection> destination)
         {
-            throw new NotImplementedException();
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+            if (destination == null)
+                throw new ArgumentNullException(nameof(destination));
+
+            if (!Options.IncludeEmptySections)
+                source = source.Where(e => !e.IsEmpty);
+
+            var itemsToCopy = source.Select(Normalize);
+
+            var dictionary = new Dictionary<string, IniSection>();
+            if (Options.MergeOnDuplicatedSections)
+            {
+                foreach (var sectionGroup in itemsToCopy.GroupBy(e => e.Name))
+                {
+                    var mergedSection = new IniSection(sectionGroup.Key);
+                    foreach (var section in sectionGroup)
+                    {
+                        CopyComments(section.Comments, mergedSection.Comments);
+                        foreach (var property in section.Properties)
+                            mergedSection.Properties.Add(property);
+                    }
+                    dictionary[sectionGroup.Key] = Normalize(mergedSection);
+                }
+            }
+            else
+            {
+                foreach (var section in itemsToCopy)
+                {
+                    if (Options.ThrowExceptions &&
+                        dictionary.ContainsKey(section.Name))
+                        throw new DuplicatedSection(section.Name);
+                    dictionary[section.Name] = section;
+                }
+            }
+
+            foreach (var section in dictionary.Values)
+                destination.Add(section);
         }
 
         /// <inheritdoc />
@@ -131,7 +168,54 @@ namespace SimpleSoft.IniParser.Impl
         /// <inheritdoc />
         public bool TryNormalizeInto(IEnumerable<IniSection> source, ICollection<IniSection> destination)
         {
-            throw new NotImplementedException();
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+            if (destination == null)
+                throw new ArgumentNullException(nameof(destination));
+
+            if (!Options.IncludeEmptySections)
+                source = source.Where(e => !e.IsEmpty);
+
+            var itemsToCopy = new List<IniSection>();
+            foreach (var section in source)
+            {
+                IniSection normalizedSection;
+                if(TryNormalize(section, out normalizedSection))
+                    itemsToCopy.Add(section);
+                return false;
+            }
+
+            var dictionary = new Dictionary<string, IniSection>();
+            if (Options.MergeOnDuplicatedSections)
+            {
+                foreach (var sectionGroup in itemsToCopy.GroupBy(e => e.Name))
+                {
+                    var mergedSection = new IniSection(sectionGroup.Key);
+                    foreach (var section in sectionGroup)
+                    {
+                        CopyComments(section.Comments, mergedSection.Comments);
+                        foreach (var property in section.Properties)
+                            mergedSection.Properties.Add(property);
+                    }
+
+                    if (TryNormalize(mergedSection, out mergedSection))
+                        dictionary[sectionGroup.Key] = mergedSection;
+                    return false;
+                }
+            }
+            else
+            {
+                foreach (var section in itemsToCopy)
+                {
+                    if (dictionary.ContainsKey(section.Name))
+                        return false;
+                    dictionary[section.Name] = section;
+                }
+            }
+
+            foreach (var section in dictionary.Values)
+                destination.Add(section);
+            return true;
         }
 
         /// <inheritdoc />
