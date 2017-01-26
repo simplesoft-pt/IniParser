@@ -137,13 +137,47 @@ namespace SimpleSoft.IniParser.Impl
         /// <inheritdoc />
         public IniSection Normalize(IniSection source)
         {
-            throw new NotImplementedException();
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+
+            var destination = Options.IsCaseSensitive
+                ? new IniSection(source.Name)
+                : new IniSection(source.Name.ToUpperInvariant());
+
+            if (destination.IsEmpty)
+                return destination;
+
+            CopyComments(source.Comments, destination.Comments);
+            NormalizeInto(source.Properties, destination.Properties);
+
+            return destination;
         }
 
         /// <inheritdoc />
         public bool TryNormalize(IniSection source, out IniSection destination)
         {
-            throw new NotImplementedException();
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+
+            var tmpDestination = Options.IsCaseSensitive
+                ? new IniSection(source.Name)
+                : new IniSection(source.Name.ToUpperInvariant());
+
+            if (source.IsEmpty)
+            {
+                destination = tmpDestination;
+                return true;
+            }
+
+            CopyComments(source.Comments, tmpDestination.Comments);
+            if (TryNormalizeInto(source.Properties, tmpDestination.Properties))
+            {
+                destination = tmpDestination;
+                return true;
+            }
+
+            destination = null;
+            return false;
         }
 
         #endregion
