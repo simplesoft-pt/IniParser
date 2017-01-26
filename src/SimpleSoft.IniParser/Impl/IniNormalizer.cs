@@ -74,9 +74,8 @@ namespace SimpleSoft.IniParser.Impl
 
             CopyComments(source.GlobalComments, destination.GlobalComments);
             NormalizeInto(source.GlobalProperties, destination.GlobalProperties);
-            //CopyProperties(source.GlobalProperties, destination.GlobalProperties);
 
-            //CopySections(source.Sections, destination.Sections);
+            NormalizeInto(source.Sections, destination.Sections);
         }
 
         /// <inheritdoc />
@@ -85,16 +84,13 @@ namespace SimpleSoft.IniParser.Impl
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
 
-            //  TODO Increase performance by not using exception handling
-            try
-            {
-                NormalizeInto(source, destination);
+            if (source.IsEmpty)
                 return true;
-            }
-            catch
-            {
-                return false;
-            }
+
+            CopyComments(source.GlobalComments, destination.GlobalComments);
+
+            return TryNormalizeInto(source.GlobalProperties, destination.GlobalProperties) &&
+                   TryNormalizeInto(source.Sections, destination.Sections);
         }
 
         #endregion
