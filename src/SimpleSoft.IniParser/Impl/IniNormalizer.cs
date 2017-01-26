@@ -176,77 +176,28 @@ namespace SimpleSoft.IniParser.Impl
             if (destination == null)
                 throw new ArgumentNullException(nameof(destination));
 
-            if (Options.IncludeEmptyProperties)
+            if (!Options.IncludeEmptyProperties)
                 source = source.Where(e => !string.IsNullOrWhiteSpace(e.Value));
 
-            var itemsToCopy = Options.IsCaseSensitive
-                ? source.Select(e => new IniProperty(e.Name, e.Value))
-                : source.Select(e => new IniProperty(e.Name.ToUpperInvariant(), e.Value));
+            //  creates a normalized copy of all properties
+            var itemsToCopy = source.Select(Normalize);
 
             var dictionary = new Dictionary<string, IniProperty>();
-            foreach (var property in itemsToCopy)
+            if (Options.ReplaceOnDuplicatedProperties)
+                foreach (var property in itemsToCopy)
+                    dictionary[property.Name] = property;
+            else
             {
-                
+                foreach (var property in itemsToCopy)
+                {
+                    if (dictionary.ContainsKey(property.Name) && Options.ThrowExceptions)
+                        throw new DuplicatedProperty(property.Name);
+                    dictionary[property.Name] = property;
+                }
             }
 
-            //  Preventing bool validation for each iteration
-            //ICollection<IniProperty> itemsToCopy;
-            //if (Options.IncludeEmptyProperties)
-            //{
-            //    if (Options.IsCaseSensitive)
-            //        itemsToCopy = origin;
-            //    else
-            //    {
-            //        var tmp = new List<IniProperty>(origin.Count);
-            //        foreach (var property in origin)
-            //            tmp.Add(new IniProperty(property.Name.ToUpperInvariant(), property.Value));
-            //        itemsToCopy = tmp;
-            //    }
-            //}
-            //else
-            //{
-            //    var tmp = new List<IniProperty>(origin.Count);
-            //    if (Options.IsCaseSensitive)
-            //    {
-            //        foreach (var property in origin)
-            //        {
-            //            if(string.IsNullOrWhiteSpace(property.Value))
-            //                continue;
-            //            tmp.Add(property);
-            //        }
-            //    }
-            //    else
-            //    {
-            //        foreach (var property in origin)
-            //        {
-            //            if (string.IsNullOrWhiteSpace(property.Value))
-            //                continue;
-            //            tmp.Add(new IniProperty(property.Name.ToUpperInvariant(), property.Value));
-            //        }
-            //    }
-            //    itemsToCopy = tmp;
-            //}
-
-            //var dictionary = new Dictionary<string, IniProperty>(origin.Count);
-            //if (Options.ReplaceOnDuplicatedProperties)
-            //    foreach (var property in itemsToCopy)
-            //        dictionary[property.Name] = property;
-            //else
-            //{
-            //    foreach (var property in itemsToCopy)
-            //    {
-            //        if (dictionary.ContainsKey(property.Name) && !Options.IgnoreErrors)
-            //        {
-            //            if (sectionName == null)
-            //                throw new DuplicatedGlobalProperty(property.Name);
-            //            throw new DuplicatedSectionProperty(sectionName, property.Name);
-            //        }
-            //        dictionary[property.Name] = property;
-            //    }
-            //}
-
-            //foreach (var value in dictionary.Values)
-            //    destination.Add(value);
+            foreach (var value in dictionary.Values)
+                destination.Add(value);
         }
 
         /// <inheritdoc />
@@ -257,16 +208,46 @@ namespace SimpleSoft.IniParser.Impl
             if (destination == null)
                 throw new ArgumentNullException(nameof(destination));
 
-            if (source.Count == 0)
-                return true;
-
-            return TryNormalizeInto((IEnumerable<IniProperty>)source, destination);
+            return source.Count == 0 || TryNormalizeInto((IEnumerable<IniProperty>)source, destination);
         }
 
         /// <inheritdoc />
         public bool TryNormalizeInto(IEnumerable<IniProperty> source, ICollection<IniProperty> destination)
         {
-            throw new NotImplementedException();
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+            if (destination == null)
+                throw new ArgumentNullException(nameof(destination));
+
+            if (!Options.IncludeEmptyProperties)
+                source = source.Where(e => !string.IsNullOrWhiteSpace(e.Value));
+
+            var itemsToCopy = new List<IniProperty>();
+            foreach (var property in source)
+            {
+                IniProperty normalizedProperty;
+                if(TryNormalize(property, out normalizedProperty))
+                    itemsToCopy.Add(normalizedProperty);
+                return false;
+            }
+
+            var dictionary = new Dictionary<string, IniProperty>();
+            if (Options.ReplaceOnDuplicatedProperties)
+                foreach (var property in itemsToCopy)
+                    dictionary[property.Name] = property;
+            else
+            {
+                foreach (var property in itemsToCopy)
+                {
+                    if (dictionary.ContainsKey(property.Name) && Options.ThrowExceptions)
+                        return false;
+                    dictionary[property.Name] = property;
+                }
+            }
+
+            foreach (var value in dictionary.Values)
+                destination.Add(value);
+            return true;
         }
 
         /// <inheritdoc />
@@ -275,8 +256,9 @@ namespace SimpleSoft.IniParser.Impl
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
 
-            var invalidChar = ExtractInvalidCharFromPropertyName(source);
-            if (invalidChar.HasValue)
+            char? invalidChar;
+            if (Options.ThrowExceptions &&
+                (invalidChar = ExtractInvalidCharFromPropertyName(source)).HasValue)
                 throw new InvalidPropertyNameException(invalidChar.Value, source);
 
             return Options.IsCaseSensitive
@@ -332,71 +314,6 @@ namespace SimpleSoft.IniParser.Impl
                     destination.Add(comment);
                 }
             }
-        }
-
-        private void CopyProperties(ICollection<IniProperty> origin, ICollection<IniProperty> destination, string sectionName = null)
-        {
-            if(origin.Count == 0)
-                return;
-
-            //  Preventing bool validation for each iteration
-            ICollection<IniProperty> itemsToCopy;
-            if (Options.IncludeEmptyProperties)
-            {
-                if (Options.IsCaseSensitive)
-                    itemsToCopy = origin;
-                else
-                {
-                    var tmp = new List<IniProperty>(origin.Count);
-                    foreach (var property in origin)
-                        tmp.Add(new IniProperty(property.Name.ToUpperInvariant(), property.Value));
-                    itemsToCopy = tmp;
-                }
-            }
-            else
-            {
-                var tmp = new List<IniProperty>(origin.Count);
-                if (Options.IsCaseSensitive)
-                {
-                    foreach (var property in origin)
-                    {
-                        if(string.IsNullOrWhiteSpace(property.Value))
-                            continue;
-                        tmp.Add(property);
-                    }
-                }
-                else
-                {
-                    foreach (var property in origin)
-                    {
-                        if (string.IsNullOrWhiteSpace(property.Value))
-                            continue;
-                        tmp.Add(new IniProperty(property.Name.ToUpperInvariant(), property.Value));
-                    }
-                }
-                itemsToCopy = tmp;
-            }
-            
-            var dictionary = new Dictionary<string, IniProperty>(origin.Count);
-            if (Options.ReplaceOnDuplicatedProperties)
-                foreach (var property in itemsToCopy)
-                    dictionary[property.Name] = property;
-            else
-            {
-                foreach (var property in itemsToCopy)
-                {
-                    if (dictionary.ContainsKey(property.Name) && !Options.ThrowExceptions)
-                    {
-                        if (sectionName == null)
-                            throw new DuplicatedGlobalProperty(property.Name);
-                        throw new DuplicatedSectionProperty(sectionName, property.Name);
-                    }
-                    dictionary[property.Name] = property;
-                }
-            }
-
-            foreach (var value in dictionary.Values)
-                destination.Add(value);
         }
 
         #endregion
