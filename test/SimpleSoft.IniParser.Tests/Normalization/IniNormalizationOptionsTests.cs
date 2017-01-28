@@ -51,7 +51,7 @@ namespace SimpleSoft.IniParser.Tests.Normalization
         public void GivenANormalizationOptionsInstanceUsingTheDefaultConstrutorThenIgnoreErrorsMustBeFalse()
         {
             var options = new IniNormalizationOptions();
-            Assert.False(options.ThrowExceptions);
+            Assert.True(options.ThrowExceptions);
         }
     }
 }
