@@ -370,11 +370,6 @@ namespace SimpleSoft.IniParser.Impl
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
 
-            char? invalidChar;
-            if (Options.ThrowExceptions &&
-                (invalidChar = ExtractInvalidCharFromPropertyName(source)).HasValue)
-                throw new InvalidPropertyNameException(invalidChar.Value, source);
-
             return Options.IsCaseSensitive
                 ? new IniProperty(source.Name, source.Value)
                 : new IniProperty(source.Name.ToUpperInvariant(), source.Value);
@@ -386,13 +381,6 @@ namespace SimpleSoft.IniParser.Impl
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
 
-            var invalidChar = ExtractInvalidCharFromPropertyName(source);
-            if (invalidChar.HasValue)
-            {
-                destination = null;
-                return false;
-            }
-
             destination = Options.IsCaseSensitive
                 ? new IniProperty(source.Name, source.Value)
                 : new IniProperty(source.Name.ToUpperInvariant(), source.Value);
@@ -402,14 +390,6 @@ namespace SimpleSoft.IniParser.Impl
         #endregion
 
         #region Helper methods
-
-        private static char? ExtractInvalidCharFromPropertyName(IniProperty property)
-        {
-            foreach (var c in property.Name)
-                if (c == ' ' || c == '=')
-                    return c;
-            return null;
-        }
 
         private void CopyComments(ICollection<string> origin, ICollection<string> destination)
         {
