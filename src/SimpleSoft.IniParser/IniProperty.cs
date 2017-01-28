@@ -58,5 +58,10 @@ namespace SimpleSoft.IniParser
         /// The property value
         /// </summary>
         public string Value { get; set; }
+
+        /// <summary>
+        /// Is the property empty?
+        /// </summary>
+        public bool IsEmpty => string.IsNullOrWhiteSpace(Value);
     }
 }
