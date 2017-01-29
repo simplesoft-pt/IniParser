@@ -291,7 +291,7 @@ namespace SimpleSoft.IniParser.Impl
                 throw new ArgumentNullException(nameof(destination));
 
             if (!Options.IncludeEmptyProperties)
-                source = source.Where(e => !string.IsNullOrWhiteSpace(e.Value));
+                source = source.Where(e => !e.IsEmpty);
 
             //  creates a normalized copy of all properties
             var itemsToCopy = source.Select(Normalize);
@@ -334,7 +334,7 @@ namespace SimpleSoft.IniParser.Impl
                 throw new ArgumentNullException(nameof(destination));
 
             if (!Options.IncludeEmptyProperties)
-                source = source.Where(e => !string.IsNullOrWhiteSpace(e.Value));
+                source = source.Where(e => !e.IsEmpty);
 
             var itemsToCopy = new List<IniProperty>();
             foreach (var property in source)
