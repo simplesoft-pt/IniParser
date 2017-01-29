@@ -340,9 +340,10 @@ namespace SimpleSoft.IniParser.Impl
             foreach (var property in source)
             {
                 IniProperty normalizedProperty;
-                if(TryNormalize(property, out normalizedProperty))
+                if (TryNormalize(property, out normalizedProperty))
                     itemsToCopy.Add(normalizedProperty);
-                return false;
+                else
+                    return false;
             }
 
             var dictionary = new Dictionary<string, IniProperty>();
