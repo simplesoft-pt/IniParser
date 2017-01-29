@@ -20,7 +20,7 @@ namespace SimpleSoft.IniParser.Tests.Normalization
         }
 
         [Fact]
-        public void GivenANormalizerWithDefaultOptionsWhenNormalizedPropertyThenNameMustBeOriginal()
+        public void GivenANormalizerCaseSensitiveWhenNormalizedPropertyThenNameMustBeOriginal()
         {
             var normalizer = new IniNormalizer {Options = {IsCaseSensitive = true}};
 
@@ -48,7 +48,7 @@ namespace SimpleSoft.IniParser.Tests.Normalization
         }
 
         [Fact]
-        public void GivenANormalizerWithDefaultOptionsWhenTryedToNormalizePropertyThenNameMustBeOriginal()
+        public void GivenANormalizerCaseSensitiveWhenTryedToNormalizePropertyThenNameMustBeOriginal()
         {
             var normalizer = new IniNormalizer { Options = { IsCaseSensitive = true } };
 
