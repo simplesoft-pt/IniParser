@@ -228,7 +228,7 @@ namespace SimpleSoft.IniParser.Impl
                 ? new IniSection(source.Name)
                 : new IniSection(source.Name.ToUpperInvariant());
 
-            if (destination.IsEmpty)
+            if (source.IsEmpty)
                 return destination;
 
             CopyComments(source.Comments, destination.Comments);
