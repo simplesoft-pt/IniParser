@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using SimpleSoft.IniParser.Exceptions;
 using SimpleSoft.IniParser.Impl;
 using Xunit;
 
@@ -74,7 +75,7 @@ namespace SimpleSoft.IniParser.Tests.Normalization
         {
             var normalizer = new IniNormalizer();
 
-            var source = PropertiesForEmptyValues;
+            var source = PropertiesWithEmptyValues;
             var destination = new List<IniProperty>();
             normalizer.NormalizeInto(source, destination);
 
@@ -87,7 +88,7 @@ namespace SimpleSoft.IniParser.Tests.Normalization
         {
             var normalizer = new IniNormalizer { Options = { IncludeEmptyProperties = true } };
 
-            var source = PropertiesForEmptyValues;
+            var source = PropertiesWithEmptyValues;
             var destination = new List<IniProperty>();
             normalizer.NormalizeInto(source, destination);
 
@@ -100,7 +101,7 @@ namespace SimpleSoft.IniParser.Tests.Normalization
         {
             var normalizer = new IniNormalizer();
 
-            var source = PropertiesForEmptyValues;
+            var source = PropertiesWithEmptyValues;
             var destination = new List<IniProperty>();
             Assert.True(normalizer.TryNormalizeInto(source, destination));
 
@@ -113,7 +114,7 @@ namespace SimpleSoft.IniParser.Tests.Normalization
         {
             var normalizer = new IniNormalizer {Options = {IncludeEmptyProperties = true}};
 
-            var source = PropertiesForEmptyValues;
+            var source = PropertiesWithEmptyValues;
             var destination = new List<IniProperty>();
             Assert.True(normalizer.TryNormalizeInto(source, destination));
 
@@ -123,14 +124,64 @@ namespace SimpleSoft.IniParser.Tests.Normalization
 
         #endregion
 
+        #region Collections -> Duplicated Keys
+
+        [Fact]
+        public void GivenANormalizerWithDefaultOptionsWhenNormalizedPropertyCollectionThenDuplicatedMustFaild()
+        {
+            var normalizer = new IniNormalizer();
+
+            var source = PropertiesWithDuplicatedCaseInsensitiveKeys;
+            var destination = new List<IniProperty>();
+
+            var ex = Assert.Throws<DuplicatedProperty>(() =>
+            {
+                normalizer.NormalizeInto(source, destination);
+            });
+
+            Assert.NotNull(ex.PropertyName);
+        }
+
+        [Fact]
+        public void GivenANormalizerCaseSensitiveWhenNormalizedPropertyCollectionThenCaseSensitiveKeysWillPass()
+        {
+            var normalizer = new IniNormalizer {Options = {IsCaseSensitive = true}};
+
+            var source = PropertiesWithDuplicatedCaseInsensitiveKeys;
+            var destination = new List<IniProperty>();
+            normalizer.NormalizeInto(source, destination);
+
+            Assert.Equal(source.Length, destination.Count);
+        }
+
+        [Fact]
+        public void GivenANormalizerIgnoringExceptionsWhenNormalizedPropertyCollectionThenDuplicatedWillPass()
+        {
+            var normalizer = new IniNormalizer {Options = {ThrowExceptions = false}};
+
+            var source = PropertiesWithDuplicatedCaseInsensitiveKeys;
+            var destination = new List<IniProperty>();
+            normalizer.NormalizeInto(source, destination);
+
+            Assert.Equal(source.Length / 2, destination.Count);
+        }
+
+        #endregion
+
         #region TestData
 
         private static readonly IniProperty PropertyForCaseSensitive = new IniProperty("p01", "value");
 
-        private static readonly IniProperty[] PropertiesForEmptyValues = {
+        private static readonly IniProperty[] PropertiesWithEmptyValues = {
             new IniProperty("p01", "value"),
             new IniProperty("p02", "value"),
             new IniProperty("p03"),
+        };
+
+        private static readonly IniProperty[] PropertiesWithDuplicatedCaseInsensitiveKeys =
+        {
+            new IniProperty("p01", "value0101"),
+            new IniProperty("P01", "value0102")
         };
 
         #endregion
