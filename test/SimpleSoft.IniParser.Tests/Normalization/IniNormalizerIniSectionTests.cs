@@ -121,15 +121,15 @@ namespace SimpleSoft.IniParser.Tests.Normalization
 
         #endregion
 
-        #region Collections -> Empty Value Tests
+        #region Collections -> Empty
 
         [Fact]
-        public void GivenANormalizerWithDefaultOptionsWhenNormalizedPropertyCollectionThenEmptyMustBeRemoved()
+        public void GivenANormalizerWithDefaultOptionsWhenNormalizedSectionCollectionThenEmptyMustBeRemoved()
         {
             var normalizer = new IniNormalizer();
 
-            var source = PropertiesWithEmptyValues;
-            var destination = new List<IniProperty>();
+            var source = SectionsWithEmptyContent;
+            var destination = new List<IniSection>();
             normalizer.NormalizeInto(source, destination);
 
             Assert.NotEmpty(destination);
@@ -137,12 +137,12 @@ namespace SimpleSoft.IniParser.Tests.Normalization
         }
 
         [Fact]
-        public void GivenANormalizerIncludingEmptyPropertiesWhenNormalizedPropertyCollectionThenEmptyMustBeKept()
+        public void GivenANormalizerIncludingEmptyPropertiesWhenNormalizedSectionCollectionThenEmptyMustBeKept()
         {
-            var normalizer = new IniNormalizer { Options = { IncludeEmptyProperties = true } };
+            var normalizer = new IniNormalizer {Options = {IncludeEmptySections = true}};
 
-            var source = PropertiesWithEmptyValues;
-            var destination = new List<IniProperty>();
+            var source = SectionsWithEmptyContent;
+            var destination = new List<IniSection>();
             normalizer.NormalizeInto(source, destination);
 
             Assert.Equal(source.Length, destination.Count);
@@ -150,12 +150,12 @@ namespace SimpleSoft.IniParser.Tests.Normalization
         }
 
         [Fact]
-        public void GivenANormalizerWithDefaultOptionsWhenTryedToNormalizePropertyCollectionThenEmptyMustBeRemoved()
+        public void GivenANormalizerWithDefaultOptionsWhenTryedToNormalizeSectionCollectionThenEmptyMustBeRemoved()
         {
             var normalizer = new IniNormalizer();
 
-            var source = PropertiesWithEmptyValues;
-            var destination = new List<IniProperty>();
+            var source = SectionsWithEmptyContent;
+            var destination = new List<IniSection>();
             Assert.True(normalizer.TryNormalizeInto(source, destination));
 
             Assert.NotEmpty(destination);
@@ -163,12 +163,12 @@ namespace SimpleSoft.IniParser.Tests.Normalization
         }
 
         [Fact]
-        public void GivenANormalizerIncludingEmptyPropertiesWhenTryedToNormalizePropertyCollectionThenEmptyMustBeKept()
+        public void GivenANormalizerIncludingEmptyPropertiesWhenTryedToNormalizeSectionCollectionThenEmptyMustBeKept()
         {
-            var normalizer = new IniNormalizer {Options = {IncludeEmptyProperties = true}};
+            var normalizer = new IniNormalizer {Options = {IncludeEmptySections = true}};
 
-            var source = PropertiesWithEmptyValues;
-            var destination = new List<IniProperty>();
+            var source = SectionsWithEmptyContent;
+            var destination = new List<IniSection>();
             Assert.True(normalizer.TryNormalizeInto(source, destination));
 
             Assert.Equal(source.Length, destination.Count);
@@ -177,79 +177,94 @@ namespace SimpleSoft.IniParser.Tests.Normalization
 
         #endregion
 
-        #region Collections -> Duplicated Keys
+        #region Collections -> Duplicated
 
         [Fact]
-        public void GivenANormalizerWithDefaultOptionsWhenNormalizedPropertyCollectionThenDuplicatedMustFaild()
+        public void GivenANormalizerWithDefaultOptionsWhenNormalizedSectionCollectionThenDuplicatedMustFaild()
         {
             var normalizer = new IniNormalizer();
 
-            var source = PropertiesWithDuplicatedCaseInsensitiveKeys;
-            var destination = new List<IniProperty>();
+            var source = SectionsWithDuplicatedCaseInsensitiveNames;
+            var destination = new List<IniSection>();
 
-            var ex = Assert.Throws<DuplicatedProperty>(() =>
+            var ex = Assert.Throws<DuplicatedSection>(() =>
             {
                 normalizer.NormalizeInto(source, destination);
             });
 
-            Assert.NotNull(ex.PropertyName);
+            Assert.NotNull(ex.SectionName);
         }
 
         [Fact]
-        public void GivenANormalizerCaseSensitiveWhenNormalizedPropertyCollectionThenCaseSensitiveKeysWillPass()
+        public void GivenANormalizerCaseSensitiveWhenNormalizedSectionCollectionThenCaseSensitiveKeysWillPass()
         {
             var normalizer = new IniNormalizer {Options = {IsCaseSensitive = true}};
 
-            var source = PropertiesWithDuplicatedCaseInsensitiveKeys;
-            var destination = new List<IniProperty>();
+            var source = SectionsWithDuplicatedCaseInsensitiveNames;
+            var destination = new List<IniSection>();
             normalizer.NormalizeInto(source, destination);
 
             Assert.Equal(source.Length, destination.Count);
         }
 
         [Fact]
-        public void GivenANormalizerIgnoringExceptionsWhenNormalizedPropertyCollectionThenDuplicatedWillPass()
+        public void GivenANormalizerIgnoringExceptionsWhenNormalizedSectionCollectionThenDuplicatedWillPass()
         {
             var normalizer = new IniNormalizer {Options = {ThrowExceptions = false}};
 
-            var source = PropertiesWithDuplicatedCaseInsensitiveKeys;
-            var destination = new List<IniProperty>();
+            var source = SectionsWithDuplicatedCaseInsensitiveNames;
+            var destination = new List<IniSection>();
             normalizer.NormalizeInto(source, destination);
 
             Assert.Equal(source.Length / 2, destination.Count);
         }
 
         [Fact]
-        public void GivenANormalizerWithDefaultOptionsWhenTryedToNormalizePropertyCollectionThenDuplicatedMustFaild()
+        public void GivenANormalizerMergingSectionsWhenNormalizedSectionCollectionThenDuplicatedWillPass()
+        {
+            var normalizer = new IniNormalizer
+            {
+                Options = {MergeOnDuplicatedSections = true, ReplaceOnDuplicatedProperties = true}
+            };
+
+            var source = SectionsWithDuplicatedCaseInsensitiveNames;
+            var destination = new List<IniSection>();
+            normalizer.NormalizeInto(source, destination);
+
+            Assert.Equal(source.Length / 2, destination.Count);
+        }
+
+        [Fact]
+        public void GivenANormalizerWithDefaultOptionsWhenTryedToNormalizeSectionCollectionThenDuplicatedMustFaild()
         {
             var normalizer = new IniNormalizer();
 
-            var source = PropertiesWithDuplicatedCaseInsensitiveKeys;
-            var destination = new List<IniProperty>();
+            var source = SectionsWithDuplicatedCaseInsensitiveNames;
+            var destination = new List<IniSection>();
             Assert.False(normalizer.TryNormalizeInto(source, destination));
 
             Assert.Equal(0, destination.Count);
         }
 
         [Fact]
-        public void GivenANormalizerCaseSensitiveWhenTryedToNormalizePropertyCollectionThenCaseSensitiveKeysWillPass()
+        public void GivenANormalizerCaseSensitiveWhenTryedToNormalizeSectionCollectionThenCaseSensitiveKeysWillPass()
         {
             var normalizer = new IniNormalizer { Options = { IsCaseSensitive = true } };
 
-            var source = PropertiesWithDuplicatedCaseInsensitiveKeys;
-            var destination = new List<IniProperty>();
+            var source = SectionsWithDuplicatedCaseInsensitiveNames;
+            var destination = new List<IniSection>();
             Assert.True(normalizer.TryNormalizeInto(source, destination));
 
             Assert.Equal(source.Length, destination.Count);
         }
 
         [Fact]
-        public void GivenANormalizerIgnoringExceptionsWhenTryedToNormalizePropertyCollectionThenDuplicatedWillPass()
+        public void GivenANormalizerIgnoringExceptionsWhenTryedToNormalizeSectionCollectionThenDuplicatedWillPass()
         {
             var normalizer = new IniNormalizer { Options = { ThrowExceptions = false } };
 
-            var source = PropertiesWithDuplicatedCaseInsensitiveKeys;
-            var destination = new List<IniProperty>();
+            var source = SectionsWithDuplicatedCaseInsensitiveNames;
+            var destination = new List<IniSection>();
             Assert.True(normalizer.TryNormalizeInto(source, destination));
 
             Assert.Equal(source.Length / 2, destination.Count);
@@ -272,16 +287,17 @@ namespace SimpleSoft.IniParser.Tests.Normalization
             }
         };
 
-        private static readonly IniProperty[] PropertiesWithEmptyValues = {
-            new IniProperty("p01", "value"),
-            new IniProperty("p02", "value"),
-            new IniProperty("p03"),
+        private static readonly IniSection[] SectionsWithEmptyContent =
+        {
+            new IniSection("s01") {Comments = {"comment", "Comment"}},
+            new IniSection("s02") {Properties = {new IniProperty("p01", "value")}},
+            new IniSection("s03"),
         };
 
-        private static readonly IniProperty[] PropertiesWithDuplicatedCaseInsensitiveKeys =
+        private static readonly IniSection[] SectionsWithDuplicatedCaseInsensitiveNames =
         {
-            new IniProperty("p01", "value0101"),
-            new IniProperty("P01", "value0102")
+            new IniSection("s01") {Comments = {"s01c01"}, Properties = {new IniProperty("s01p01", "value")}},
+            new IniSection("S01") {Comments = {"S01c01"}, Properties = {new IniProperty("S01p01", "value")}},
         };
 
         #endregion

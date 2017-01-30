@@ -179,8 +179,8 @@ namespace SimpleSoft.IniParser.Impl
                 IniSection normalizedSection;
                 if (TryNormalize(section, out normalizedSection))
                 {
-                    if (Options.IncludeEmptySections || !section.IsEmpty)
-                        itemsToCopy.Add(section);
+                    if (Options.IncludeEmptySections || !normalizedSection.IsEmpty)
+                        itemsToCopy.Add(normalizedSection);
                 }
                 else
                     return false;
