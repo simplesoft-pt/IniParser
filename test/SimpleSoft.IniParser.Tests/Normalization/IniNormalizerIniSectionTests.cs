@@ -88,7 +88,7 @@ namespace SimpleSoft.IniParser.Tests.Normalization
 
         #endregion
 
-        #region Single -> Empty Comments
+        #region Single -> Comments
 
         [Fact]
         public void GivenANormalizerWithDefaultOptionsWhenNormalizedSectionThenEmptyCommentsMustBeRemoved()
