@@ -8,7 +8,7 @@ namespace SimpleSoft.IniParser.Tests.Normalization
 {
     public class IniNormalizerIniPropertyTests
     {
-        #region Single
+        #region Single -> Name
 
         [Fact]
         public void GivenANormalizerWithDefaultOptionsWhenNormalizedPropertyThenNameMustBeUpperCase()
