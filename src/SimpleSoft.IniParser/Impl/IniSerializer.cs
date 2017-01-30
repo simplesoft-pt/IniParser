@@ -37,6 +37,11 @@ namespace SimpleSoft.IniParser.Impl
     public class IniSerializer : IIniSerializer
     {
         /// <summary>
+        /// Default serializer instance
+        /// </summary>
+        public static readonly IniSerializer Default = new IniSerializer();
+
+        /// <summary>
         /// Creates a new instance.
         /// </summary>
         /// <param name="options">The serialization options</param>

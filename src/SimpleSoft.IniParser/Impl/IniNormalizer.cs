@@ -36,6 +36,11 @@ namespace SimpleSoft.IniParser.Impl
     public class IniNormalizer : IIniNormalizer
     {
         /// <summary>
+        /// Default normalizer instance
+        /// </summary>
+        public static readonly IniNormalizer Default = new IniNormalizer();
+
+        /// <summary>
         /// Creates a new instance.
         /// </summary>
         /// <param name="options">The normalization options</param>
