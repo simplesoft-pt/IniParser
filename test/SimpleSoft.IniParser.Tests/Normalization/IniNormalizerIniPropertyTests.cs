@@ -68,7 +68,7 @@ namespace SimpleSoft.IniParser.Tests.Normalization
 
         #endregion
 
-        #region Collections -> Empty Value Tests
+        #region Collections -> Empty
 
         [Fact]
         public void GivenANormalizerWithDefaultOptionsWhenNormalizedPropertyCollectionThenEmptyMustBeRemoved()
@@ -124,7 +124,7 @@ namespace SimpleSoft.IniParser.Tests.Normalization
 
         #endregion
 
-        #region Collections -> Duplicated Keys
+        #region Collections -> Duplicated
 
         [Fact]
         public void GivenANormalizerWithDefaultOptionsWhenNormalizedPropertyCollectionThenDuplicatedMustFaild()
