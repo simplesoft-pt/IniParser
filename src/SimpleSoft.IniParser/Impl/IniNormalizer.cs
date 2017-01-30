@@ -119,10 +119,10 @@ namespace SimpleSoft.IniParser.Impl
             if (destination == null)
                 throw new ArgumentNullException(nameof(destination));
 
-            if (!Options.IncludeEmptySections)
-                source = source.Where(e => !e.IsEmpty);
-
             var itemsToCopy = source.Select(Normalize);
+
+            if (!Options.IncludeEmptySections)
+                itemsToCopy = itemsToCopy.Where(e => !e.IsEmpty);
 
             var dictionary = new Dictionary<string, IniSection>();
             if (Options.MergeOnDuplicatedSections)
@@ -173,16 +173,17 @@ namespace SimpleSoft.IniParser.Impl
             if (destination == null)
                 throw new ArgumentNullException(nameof(destination));
 
-            if (!Options.IncludeEmptySections)
-                source = source.Where(e => !e.IsEmpty);
-
             var itemsToCopy = new List<IniSection>();
             foreach (var section in source)
             {
                 IniSection normalizedSection;
-                if(TryNormalize(section, out normalizedSection))
-                    itemsToCopy.Add(section);
-                return false;
+                if (TryNormalize(section, out normalizedSection))
+                {
+                    if (Options.IncludeEmptySections || !section.IsEmpty)
+                        itemsToCopy.Add(section);
+                }
+                else
+                    return false;
             }
 
             var dictionary = new Dictionary<string, IniSection>();
