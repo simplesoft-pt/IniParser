@@ -90,22 +90,9 @@ namespace SimpleSoft.IniParser.Impl
             var builder = new StringBuilder();
 
             AppendCommentsAndProperties(builder, container.GlobalComments, container.GlobalProperties);
-
-            if (Options.IncludeEmptySections)
+            foreach (var section in container.Sections)
             {
-                foreach (var section in container.Sections)
-                {
-                    AppendSection(builder, section);
-                }
-            }
-            else
-            {
-                foreach (var section in container.Sections)
-                {
-                    if(section.Comments.Count == 0 && section.Properties.Count == 0)
-                        continue;
-                    AppendSection(builder, section);
-                }
+                AppendSection(builder, section);
             }
 
             return builder.ToString();
@@ -172,26 +159,11 @@ namespace SimpleSoft.IniParser.Impl
                 builder.AppendLine(comment);
             }
 
-            if (Options.IncludeEmptyProperties)
+            foreach (var property in properties)
             {
-                foreach (var property in properties)
-                {
-                    builder.Append(property.Name);
-                    builder.Append(Options.PropertyNameValueDelimiter);
-                    builder.AppendLine(property.Value ?? string.Empty);
-                }
-            }
-            else
-            {
-                foreach (var property in properties)
-                {
-                    if(string.IsNullOrWhiteSpace(property.Value))
-                        continue;
-
-                    builder.Append(property.Name);
-                    builder.Append(Options.PropertyNameValueDelimiter);
-                    builder.AppendLine(property.Value ?? string.Empty);
-                }
+                builder.Append(property.Name);
+                builder.Append(Options.PropertyNameValueDelimiter);
+                builder.AppendLine(property.Value ?? string.Empty);
             }
         }
     }
