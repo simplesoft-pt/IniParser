@@ -222,10 +222,7 @@ namespace SimpleSoft.IniParser.Tests.Normalization
         [Fact]
         public void GivenANormalizerMergingSectionsWhenNormalizedSectionCollectionThenDuplicatedWillPass()
         {
-            var normalizer = new IniNormalizer
-            {
-                Options = {MergeOnDuplicatedSections = true, ReplaceOnDuplicatedProperties = true}
-            };
+            var normalizer = new IniNormalizer {Options = {MergeOnDuplicatedSections = true}};
 
             var source = SectionsWithDuplicatedCaseInsensitiveNames;
             var destination = new List<IniSection>();
@@ -265,9 +262,9 @@ namespace SimpleSoft.IniParser.Tests.Normalization
 
             var source = SectionsWithDuplicatedCaseInsensitiveNames;
             var destination = new List<IniSection>();
-            Assert.True(normalizer.TryNormalizeInto(source, destination));
+            Assert.False(normalizer.TryNormalizeInto(source, destination));
 
-            Assert.Equal(source.Length / 2, destination.Count);
+            Assert.Equal(0, destination.Count);
         }
 
         #endregion
@@ -296,8 +293,8 @@ namespace SimpleSoft.IniParser.Tests.Normalization
 
         private static readonly IniSection[] SectionsWithDuplicatedCaseInsensitiveNames =
         {
-            new IniSection("s01") {Comments = {"s01c01"}, Properties = {new IniProperty("s01p01", "value")}},
-            new IniSection("S01") {Comments = {"S01c01"}, Properties = {new IniProperty("S01p01", "value")}},
+            new IniSection("s01") {Comments = {"s01c01"}, Properties = {new IniProperty("p01", "value")}},
+            new IniSection("S01") {Comments = {"S01c01"}, Properties = {new IniProperty("p02", "value")}},
         };
 
         #endregion
