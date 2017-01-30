@@ -88,7 +88,7 @@ namespace SimpleSoft.IniParser.Tests.Normalization
         }
 
         [Fact]
-        public void GivenANormalizerIncludingEmptyPropertiesWhenNormalizedPropertyCollectionThenEmptyMustBeRemoved()
+        public void GivenANormalizerIncludingEmptyPropertiesWhenNormalizedPropertyCollectionThenEmptyMustBeKept()
         {
             var normalizer = new IniNormalizer { Options = { IncludeEmptyProperties = true } };
 
@@ -124,7 +124,7 @@ namespace SimpleSoft.IniParser.Tests.Normalization
         }
 
         [Fact]
-        public void GivenANormalizerIncludingEmptyPropertiesWhenTryedToNormalizePropertyCollectionThenEmptyMustBeRemoved()
+        public void GivenANormalizerIncludingEmptyPropertiesWhenTryedToNormalizePropertyCollectionThenEmptyMustBeKept()
         {
             var normalizer = new IniNormalizer {Options = {IncludeEmptyProperties = true}};
 
