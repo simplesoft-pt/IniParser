@@ -166,6 +166,42 @@ namespace SimpleSoft.IniParser.Tests.Normalization
             Assert.Equal(source.Length / 2, destination.Count);
         }
 
+        [Fact]
+        public void GivenANormalizerWithDefaultOptionsWhenTryedToNormalizePropertyCollectionThenDuplicatedMustFaild()
+        {
+            var normalizer = new IniNormalizer();
+
+            var source = PropertiesWithDuplicatedCaseInsensitiveKeys;
+            var destination = new List<IniProperty>();
+            Assert.False(normalizer.TryNormalizeInto(source, destination));
+
+            Assert.Equal(0, destination.Count);
+        }
+
+        [Fact]
+        public void GivenANormalizerCaseSensitiveWhenTryedToNormalizePropertyCollectionThenCaseSensitiveKeysWillPass()
+        {
+            var normalizer = new IniNormalizer { Options = { IsCaseSensitive = true } };
+
+            var source = PropertiesWithDuplicatedCaseInsensitiveKeys;
+            var destination = new List<IniProperty>();
+            Assert.True(normalizer.TryNormalizeInto(source, destination));
+
+            Assert.Equal(source.Length, destination.Count);
+        }
+
+        [Fact]
+        public void GivenANormalizerIgnoringExceptionsWhenTryedToNormalizePropertyCollectionThenDuplicatedWillPass()
+        {
+            var normalizer = new IniNormalizer { Options = { ThrowExceptions = false } };
+
+            var source = PropertiesWithDuplicatedCaseInsensitiveKeys;
+            var destination = new List<IniProperty>();
+            Assert.True(normalizer.TryNormalizeInto(source, destination));
+
+            Assert.Equal(source.Length / 2, destination.Count);
+        }
+
         #endregion
 
         #region TestData
