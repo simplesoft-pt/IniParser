@@ -201,7 +201,8 @@ namespace SimpleSoft.IniParser.Impl
 
                     if (TryNormalize(mergedSection, out mergedSection))
                         dictionary[sectionGroup.Key] = mergedSection;
-                    return false;
+                    else
+                        return false;
                 }
             }
             else

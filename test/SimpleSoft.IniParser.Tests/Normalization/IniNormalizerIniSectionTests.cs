@@ -216,7 +216,7 @@ namespace SimpleSoft.IniParser.Tests.Normalization
             var destination = new List<IniSection>();
             normalizer.NormalizeInto(source, destination);
 
-            Assert.Equal(source.Length / 2, destination.Count);
+            Assert.Equal(1, destination.Count);
         }
 
         [Fact]
@@ -228,7 +228,7 @@ namespace SimpleSoft.IniParser.Tests.Normalization
             var destination = new List<IniSection>();
             normalizer.NormalizeInto(source, destination);
 
-            Assert.Equal(source.Length / 2, destination.Count);
+            Assert.Equal(1, destination.Count);
         }
 
         [Fact]
@@ -265,6 +265,18 @@ namespace SimpleSoft.IniParser.Tests.Normalization
             Assert.False(normalizer.TryNormalizeInto(source, destination));
 
             Assert.Equal(0, destination.Count);
+        }
+
+        [Fact]
+        public void GivenANormalizerMergingSectionsWhenTryedToNormalizeSectionCollectionThenDuplicatedWillPass()
+        {
+            var normalizer = new IniNormalizer { Options = { MergeOnDuplicatedSections = true } };
+
+            var source = SectionsWithDuplicatedCaseInsensitiveNames;
+            var destination = new List<IniSection>();
+            Assert.True(normalizer.TryNormalizeInto(source, destination));
+
+            Assert.Equal(1, destination.Count);
         }
 
         #endregion
