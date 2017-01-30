@@ -7,14 +7,14 @@ namespace SimpleSoft.IniParser.Tests.Normalization
 {
     public class IniNormalizerIniPropertyTests
     {
-        #region IniProperty
+        #region Single
 
         [Fact]
         public void GivenANormalizerWithDefaultOptionsWhenNormalizedPropertyThenNameMustBeUpperCase()
         {
             var normalizer = new IniNormalizer();
 
-            var source = new IniProperty("p01", "value");
+            var source = PropertyForCaseSensitive;
             var result = normalizer.Normalize(source);
 
             Assert.NotNull(result);
@@ -28,7 +28,7 @@ namespace SimpleSoft.IniParser.Tests.Normalization
         {
             var normalizer = new IniNormalizer {Options = {IsCaseSensitive = true}};
 
-            var source = new IniProperty("p01", "value");
+            var source = PropertyForCaseSensitive;
             var result = normalizer.Normalize(source);
 
             Assert.NotNull(result);
@@ -41,7 +41,7 @@ namespace SimpleSoft.IniParser.Tests.Normalization
         {
             var normalizer = new IniNormalizer();
 
-            var source = new IniProperty("p01", "value");
+            var source = PropertyForCaseSensitive;
             IniProperty result;
             Assert.True(normalizer.TryNormalize(source, out result));
 
@@ -56,7 +56,7 @@ namespace SimpleSoft.IniParser.Tests.Normalization
         {
             var normalizer = new IniNormalizer { Options = { IsCaseSensitive = true } };
 
-            var source = new IniProperty("p01", "value");
+            var source = PropertyForCaseSensitive;
             IniProperty result;
             Assert.True(normalizer.TryNormalize(source, out result));
 
@@ -67,19 +67,14 @@ namespace SimpleSoft.IniParser.Tests.Normalization
 
         #endregion
 
-        #region Collections of IniProperty
+        #region Collections -> Empty Value Tests
 
         [Fact]
         public void GivenANormalizerWithDefaultOptionsWhenNormalizedPropertyCollectionThenEmptyMustBeRemoved()
         {
             var normalizer = new IniNormalizer();
 
-            var source = new[]
-            {
-                new IniProperty("p01", "value"),
-                new IniProperty("p02", "value"),
-                new IniProperty("p03"),
-            };
+            var source = PropertiesForEmptyValues;
             var destination = new List<IniProperty>();
             normalizer.NormalizeInto(source, destination);
 
@@ -92,12 +87,7 @@ namespace SimpleSoft.IniParser.Tests.Normalization
         {
             var normalizer = new IniNormalizer { Options = { IncludeEmptyProperties = true } };
 
-            var source = new[]
-            {
-                new IniProperty("p01", "value"),
-                new IniProperty("p02", "value"),
-                new IniProperty("p03"),
-            };
+            var source = PropertiesForEmptyValues;
             var destination = new List<IniProperty>();
             normalizer.NormalizeInto(source, destination);
 
@@ -110,12 +100,7 @@ namespace SimpleSoft.IniParser.Tests.Normalization
         {
             var normalizer = new IniNormalizer();
 
-            var source = new[]
-            {
-                new IniProperty("p01", "value"),
-                new IniProperty("p02", "value"),
-                new IniProperty("p03"),
-            };
+            var source = PropertiesForEmptyValues;
             var destination = new List<IniProperty>();
             Assert.True(normalizer.TryNormalizeInto(source, destination));
 
@@ -128,18 +113,25 @@ namespace SimpleSoft.IniParser.Tests.Normalization
         {
             var normalizer = new IniNormalizer {Options = {IncludeEmptyProperties = true}};
 
-            var source = new[]
-            {
-                new IniProperty("p01", "value"),
-                new IniProperty("p02", "value"),
-                new IniProperty("p03"),
-            };
+            var source = PropertiesForEmptyValues;
             var destination = new List<IniProperty>();
             Assert.True(normalizer.TryNormalizeInto(source, destination));
 
             Assert.Equal(source.Length, destination.Count);
             Assert.True(destination.Any(e => e.IsEmpty));
         }
+
+        #endregion
+
+        #region TestData
+
+        private static readonly IniProperty PropertyForCaseSensitive = new IniProperty("p01", "value");
+
+        private static readonly IniProperty[] PropertiesForEmptyValues = {
+            new IniProperty("p01", "value"),
+            new IniProperty("p02", "value"),
+            new IniProperty("p03"),
+        };
 
         #endregion
     }
