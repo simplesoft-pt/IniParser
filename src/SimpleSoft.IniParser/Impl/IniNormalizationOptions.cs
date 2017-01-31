@@ -62,5 +62,15 @@ namespace SimpleSoft.IniParser.Impl
         /// Throw exceptions on errors? Defaults to <value>true</value>.
         /// </summary>
         public bool ThrowExceptions { get; set; } = true;
+
+        /// <summary>
+        /// Sort sections? Defaults to <see cref="IniNormalizationSortType.None"/>.
+        /// </summary>
+        public IniNormalizationSortType SortSections { get; set; } = IniNormalizationSortType.None;
+
+        /// <summary>
+        /// Sort properties by section? Defaults to <see cref="IniNormalizationSortType.None"/>.
+        /// </summary>
+        public IniNormalizationSortType SortProperties { get; set; } = IniNormalizationSortType.None;
     }
 }
