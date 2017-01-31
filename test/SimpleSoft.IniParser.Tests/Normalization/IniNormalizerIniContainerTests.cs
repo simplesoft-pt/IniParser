@@ -30,7 +30,7 @@ namespace SimpleSoft.IniParser.Tests.Normalization
 {
     public class IniNormalizerIniContainerTests
     {
-        #region IniContainer -> Global Comments
+        #region IniContainer -> Empty Global Comments
 
         [Fact]
         public void GivenANormalizerWithDefaultOptionsWhenNormalizedContainerThenEmptyGlobalCommentsMustBeRemoved()
@@ -42,6 +42,7 @@ namespace SimpleSoft.IniParser.Tests.Normalization
 
             Assert.NotNull(result);
             Assert.NotEmpty(result.GlobalComments);
+            Assert.Equal(1, result.GlobalComments.Count);
             Assert.False(result.GlobalComments.Any(string.IsNullOrWhiteSpace));
         }
 
@@ -54,8 +55,41 @@ namespace SimpleSoft.IniParser.Tests.Normalization
             var result = normalizer.Normalize(source);
 
             Assert.NotNull(result);
+            Assert.NotEmpty(result.GlobalComments);
             Assert.Equal(source.GlobalComments.Count, result.GlobalComments.Count);
             Assert.True(result.GlobalComments.Any(string.IsNullOrWhiteSpace));
+        }
+
+        #endregion
+
+        #region IniContainer -> Empty Global Properties
+
+        [Fact]
+        public void GivenANormalizerWithDefaultOptionsWhenNormalizedContainerThenEmptyGlobalPropertiesMustBeRemoved()
+        {
+            var normalizer = new IniNormalizer();
+
+            var source = ContainerForEmptyProperties;
+            var result = normalizer.Normalize(source);
+
+            Assert.NotNull(result);
+            Assert.NotEmpty(result.GlobalProperties);
+            Assert.Equal(1, result.GlobalProperties.Count);
+            Assert.False(result.GlobalProperties.Any(e => e.IsEmpty));
+        }
+
+        [Fact]
+        public void GivenANormalizerWithDefaultOptionsWhenNormalizedContainerThenEmptyGlobalPropertiesMustBeKept()
+        {
+            var normalizer = new IniNormalizer {Options = {IncludeEmptyProperties = true}};
+
+            var source = ContainerForEmptyProperties;
+            var result = normalizer.Normalize(source);
+
+            Assert.NotNull(result);
+            Assert.NotEmpty(result.GlobalProperties);
+            Assert.Equal(source.GlobalProperties.Count, result.GlobalProperties.Count);
+            Assert.True(result.GlobalProperties.Any(e => e.IsEmpty));
         }
 
         #endregion
@@ -67,9 +101,20 @@ namespace SimpleSoft.IniParser.Tests.Normalization
             GlobalComments =
             {
                 "comment",
+                "     ",
                 string.Empty,
-                "comment",
                 null
+            }
+        };
+
+        private static readonly IniContainer ContainerForEmptyProperties= new IniContainer
+        {
+            GlobalProperties =
+            {
+                new IniProperty("gp01", "value"),
+                new IniProperty("gp02", "    "),
+                new IniProperty("gp03", string.Empty),
+                new IniProperty("gp04"),
             }
         };
 
