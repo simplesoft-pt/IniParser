@@ -29,6 +29,11 @@ namespace SimpleSoft.IniParser.Impl
     public class IniSerializationOptions
     {
         /// <summary>
+        /// Default options instance.
+        /// </summary>
+        public static readonly IniSerializationOptions Default = new IniSerializationOptions();
+
+        /// <summary>
         /// Should the <see cref="IniContainer"/> be normalized before serialization?
         /// Defaults to <value>true</value>.
         /// </summary>

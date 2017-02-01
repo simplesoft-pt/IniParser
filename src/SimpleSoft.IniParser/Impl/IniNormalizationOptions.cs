@@ -29,6 +29,11 @@ namespace SimpleSoft.IniParser.Impl
     public class IniNormalizationOptions
     {
         /// <summary>
+        /// Default options instance.
+        /// </summary>
+        public static readonly IniNormalizationOptions Default = new IniNormalizationOptions();
+
+        /// <summary>
         /// Should empty comments be included? Defaults to <value>false</value>.
         /// </summary>
         public bool IncludeEmptyComments { get; set; } = false;
