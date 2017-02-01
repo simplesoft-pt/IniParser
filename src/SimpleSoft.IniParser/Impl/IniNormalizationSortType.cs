@@ -31,14 +31,14 @@ namespace SimpleSoft.IniParser.Impl
         /// <summary>
         /// Undefined order
         /// </summary>
-        None,
+        None = 0,
         /// <summary>
         /// Ascending order
         /// </summary>
-        Ascending,
+        Ascending = 1,
         /// <summary>
         /// Descending order
         /// </summary>
-        Descending
+        Descending = 2
     }
 }
