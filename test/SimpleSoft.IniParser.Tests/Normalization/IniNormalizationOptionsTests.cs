@@ -77,5 +77,19 @@ namespace SimpleSoft.IniParser.Tests.Normalization
             var options = new IniNormalizationOptions();
             Assert.True(options.ThrowExceptions);
         }
+
+        [Fact]
+        public void GivenANormalizationOptionsInstanceUsingTheDefaultConstrutorThenSortSectionsMustBeNone()
+        {
+            var options = new IniNormalizationOptions();
+            Assert.Equal(IniNormalizationSortType.None, options.SortSections);
+        }
+
+        [Fact]
+        public void GivenANormalizationOptionsInstanceUsingTheDefaultConstrutorThenSortPropertiesMustBeNone()
+        {
+            var options = new IniNormalizationOptions();
+            Assert.Equal(IniNormalizationSortType.None, options.SortProperties);
+        }
     }
 }
