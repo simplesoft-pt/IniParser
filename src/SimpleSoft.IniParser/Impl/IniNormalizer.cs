@@ -155,8 +155,7 @@ namespace SimpleSoft.IniParser.Impl
                 }
             }
 
-            foreach (var section in dictionary.Values)
-                destination.Add(section);
+            CopyAndSortSections(dictionary.Values, destination);
         }
 
         /// <inheritdoc />
@@ -220,8 +219,7 @@ namespace SimpleSoft.IniParser.Impl
                 }
             }
 
-            foreach (var section in dictionary.Values)
-                destination.Add(section);
+            CopyAndSortSections(dictionary.Values, destination);
             return true;
         }
 
@@ -317,8 +315,7 @@ namespace SimpleSoft.IniParser.Impl
                 }
             }
 
-            foreach (var value in dictionary.Values)
-                destination.Add(value);
+            CopyAndSortProperties(dictionary.Values, destination);
         }
 
         /// <inheritdoc />
@@ -367,8 +364,7 @@ namespace SimpleSoft.IniParser.Impl
                 }
             }
 
-            foreach (var value in dictionary.Values)
-                destination.Add(value);
+            CopyAndSortProperties(dictionary.Values, destination);
             return true;
         }
 
@@ -415,6 +411,54 @@ namespace SimpleSoft.IniParser.Impl
                         continue;
                     destination.Add(comment);
                 }
+            }
+        }
+
+        private void CopyAndSortProperties(ICollection<IniProperty> origin, ICollection<IniProperty> destination)
+        {
+            if(origin.Count == 0)
+                return;
+
+            switch (Options.SortProperties)
+            {
+                case IniNormalizationSortType.None:
+                    foreach (var value in origin)
+                        destination.Add(value);
+                    break;
+                case IniNormalizationSortType.Ascending:
+                    foreach (var value in origin.OrderBy(e => e.Name))
+                        destination.Add(value);
+                    break;
+                case IniNormalizationSortType.Descending:
+                    foreach (var value in origin.OrderByDescending(e => e.Name))
+                        destination.Add(value);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        private void CopyAndSortSections(ICollection<IniSection> origin, ICollection<IniSection> destination)
+        {
+            if (origin.Count == 0)
+                return;
+
+            switch (Options.SortProperties)
+            {
+                case IniNormalizationSortType.None:
+                    foreach (var value in origin)
+                        destination.Add(value);
+                    break;
+                case IniNormalizationSortType.Ascending:
+                    foreach (var value in origin.OrderBy(e => e.Name))
+                        destination.Add(value);
+                    break;
+                case IniNormalizationSortType.Descending:
+                    foreach (var value in origin.OrderByDescending(e => e.Name))
+                        destination.Add(value);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
