@@ -41,6 +41,8 @@ namespace SimpleSoft.IniParser.Impl
         /// </summary>
         public static readonly IniSerializer Default = new IniSerializer();
 
+        #region Constructors
+
         /// <summary>
         /// Creates a new instance.
         /// </summary>
@@ -59,12 +61,35 @@ namespace SimpleSoft.IniParser.Impl
         }
 
         /// <summary>
-        /// Creates a new instance.
+        /// Creates a new instance. Will use <see cref="IniNormalizer.Default"/>.
         /// </summary>
-        public IniSerializer() : this(new IniSerializationOptions(), new IniNormalizer())
+        /// <param name="options">The serialization options</param>
+        /// <exception cref="ArgumentNullException"></exception>
+        public IniSerializer(IniSerializationOptions options) : this(options, IniNormalizer.Default)
+        {
+
+        }
+
+        /// <summary>
+        /// Creates a new instance. Will use <see cref="IniSerializationOptions.Default"/>.
+        /// </summary>
+        /// <param name="normalizer">The <see cref="IniContainer"/> normalizer to use</param>
+        /// <exception cref="ArgumentNullException"></exception>
+        public IniSerializer(IIniNormalizer normalizer) : this(IniSerializationOptions.Default, normalizer)
         {
             
         }
+
+        /// <summary>
+        /// Creates a new instance. Will use <see cref="IniSerializationOptions.Default"/> and
+        /// <see cref="IniNormalizer.Default"/>.
+        /// </summary>
+        public IniSerializer() : this(IniSerializationOptions.Default, IniNormalizer.Default)
+        {
+            
+        }
+
+        #endregion
 
         /// <summary>
         /// Serialization options.

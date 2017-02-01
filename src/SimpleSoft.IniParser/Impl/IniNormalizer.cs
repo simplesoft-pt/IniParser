@@ -54,9 +54,9 @@ namespace SimpleSoft.IniParser.Impl
         }
 
         /// <summary>
-        /// Creates a new instance.
+        /// Creates a new instance. Will use <see cref="IniNormalizationOptions.Default"/>.
         /// </summary>
-        public IniNormalizer() : this(new IniNormalizationOptions())
+        public IniNormalizer() : this(IniNormalizationOptions.Default)
         {
             
         }
