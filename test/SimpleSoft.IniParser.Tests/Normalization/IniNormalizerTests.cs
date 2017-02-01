@@ -30,7 +30,15 @@ namespace SimpleSoft.IniParser.Tests.Normalization
     public class IniNormalizerTests
     {
         [Fact]
-        public void GivenANormalizerReceivingCustomOptionsThenOptionsPropertyAndOriginAreTheSame()
+        public void GivenANormalizerWithDefaultConstructorThenDefaultsAreUsed()
+        {
+            var normalizer = new IniNormalizer();
+
+            Assert.Same(IniNormalizationOptions.Default, normalizer.Options);
+        }
+
+        [Fact]
+        public void GivenANormalizerReceivingCustomOptionsThenReferencesAreTheSame()
         {
             var options = new IniNormalizationOptions();
             var normalizer = new IniNormalizer(options);

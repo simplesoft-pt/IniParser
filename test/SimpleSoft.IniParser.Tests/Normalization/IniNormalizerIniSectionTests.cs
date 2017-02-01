@@ -50,7 +50,10 @@ namespace SimpleSoft.IniParser.Tests.Normalization
         [Fact]
         public void GivenANormalizerCaseSensitiveWhenNormalizedSectionThenNameMustBeOriginal()
         {
-            var normalizer = new IniNormalizer {Options = {IsCaseSensitive = true}};
+            var normalizer = new IniNormalizer(new IniNormalizationOptions
+            {
+                IsCaseSensitive = true
+            });
 
             var source = SectionForCaseSensitive;
             var result = normalizer.Normalize(source);
@@ -76,7 +79,10 @@ namespace SimpleSoft.IniParser.Tests.Normalization
         [Fact]
         public void GivenANormalizerCaseSensitiveWhenTryedToNormalizeSectionThenNameMustBeOriginal()
         {
-            var normalizer = new IniNormalizer { Options = { IsCaseSensitive = true } };
+            var normalizer = new IniNormalizer(new IniNormalizationOptions
+            {
+                IsCaseSensitive = true
+            });
 
             var source = SectionForCaseSensitive;
             IniSection result;
@@ -106,7 +112,10 @@ namespace SimpleSoft.IniParser.Tests.Normalization
         [Fact]
         public void GivenANormalizerCaseSensitiveWhenNormalizedSectionThenEmptyCommentsMustBeKept()
         {
-            var normalizer = new IniNormalizer {Options = {IncludeEmptyComments = true}};
+            var normalizer = new IniNormalizer(new IniNormalizationOptions
+            {
+                IncludeEmptyComments = true
+            });
 
             var source = SectionForEmptyComments;
             var result = normalizer.Normalize(source);
@@ -133,7 +142,10 @@ namespace SimpleSoft.IniParser.Tests.Normalization
         [Fact]
         public void GivenANormalizerCaseSensitiveWhenTryedToNormalizeSectionThenEmptyCommentsMustBeKept()
         {
-            var normalizer = new IniNormalizer { Options = { IsCaseSensitive = true } };
+            var normalizer = new IniNormalizer(new IniNormalizationOptions
+            {
+                IsCaseSensitive = true
+            });
 
             var source = SectionForEmptyComments;
             IniSection result;
@@ -163,7 +175,10 @@ namespace SimpleSoft.IniParser.Tests.Normalization
         [Fact]
         public void GivenANormalizerIncludingEmptyPropertiesWhenNormalizedSectionCollectionThenEmptyMustBeKept()
         {
-            var normalizer = new IniNormalizer {Options = {IncludeEmptySections = true}};
+            var normalizer = new IniNormalizer(new IniNormalizationOptions
+            {
+                IncludeEmptySections = true
+            });
 
             var source = SectionsWithEmptyContent;
             var destination = new List<IniSection>();
@@ -189,7 +204,10 @@ namespace SimpleSoft.IniParser.Tests.Normalization
         [Fact]
         public void GivenANormalizerIncludingEmptyPropertiesWhenTryedToNormalizeSectionCollectionThenEmptyMustBeKept()
         {
-            var normalizer = new IniNormalizer {Options = {IncludeEmptySections = true}};
+            var normalizer = new IniNormalizer(new IniNormalizationOptions
+            {
+                IncludeEmptySections = true
+            });
 
             var source = SectionsWithEmptyContent;
             var destination = new List<IniSection>();
@@ -222,7 +240,10 @@ namespace SimpleSoft.IniParser.Tests.Normalization
         [Fact]
         public void GivenANormalizerCaseSensitiveWhenNormalizedSectionCollectionThenCaseSensitiveKeysWillPass()
         {
-            var normalizer = new IniNormalizer {Options = {IsCaseSensitive = true}};
+            var normalizer = new IniNormalizer(new IniNormalizationOptions
+            {
+                IsCaseSensitive = true
+            });
 
             var source = SectionsWithDuplicatedCaseInsensitiveNames;
             var destination = new List<IniSection>();
@@ -234,7 +255,10 @@ namespace SimpleSoft.IniParser.Tests.Normalization
         [Fact]
         public void GivenANormalizerIgnoringExceptionsWhenNormalizedSectionCollectionThenDuplicatedWillPass()
         {
-            var normalizer = new IniNormalizer {Options = {ThrowExceptions = false}};
+            var normalizer = new IniNormalizer(new IniNormalizationOptions
+            {
+                ThrowExceptions = false
+            });
 
             var source = SectionsWithDuplicatedCaseInsensitiveNames;
             var destination = new List<IniSection>();
@@ -246,7 +270,10 @@ namespace SimpleSoft.IniParser.Tests.Normalization
         [Fact]
         public void GivenANormalizerMergingSectionsWhenNormalizedSectionCollectionThenDuplicatedWillPass()
         {
-            var normalizer = new IniNormalizer {Options = {MergeOnDuplicatedSections = true}};
+            var normalizer = new IniNormalizer(new IniNormalizationOptions
+            {
+                MergeOnDuplicatedSections = true
+            });
 
             var source = SectionsWithDuplicatedCaseInsensitiveNames;
             var destination = new List<IniSection>();
@@ -270,7 +297,10 @@ namespace SimpleSoft.IniParser.Tests.Normalization
         [Fact]
         public void GivenANormalizerCaseSensitiveWhenTryedToNormalizeSectionCollectionThenCaseSensitiveKeysWillPass()
         {
-            var normalizer = new IniNormalizer { Options = { IsCaseSensitive = true } };
+            var normalizer = new IniNormalizer(new IniNormalizationOptions
+            {
+                IsCaseSensitive = true
+            });
 
             var source = SectionsWithDuplicatedCaseInsensitiveNames;
             var destination = new List<IniSection>();
@@ -282,7 +312,10 @@ namespace SimpleSoft.IniParser.Tests.Normalization
         [Fact]
         public void GivenANormalizerIgnoringExceptionsWhenTryedToNormalizeSectionCollectionThenDuplicatedWillPass()
         {
-            var normalizer = new IniNormalizer { Options = { ThrowExceptions = false } };
+            var normalizer = new IniNormalizer(new IniNormalizationOptions
+            {
+                ThrowExceptions = false
+            });
 
             var source = SectionsWithDuplicatedCaseInsensitiveNames;
             var destination = new List<IniSection>();
@@ -294,7 +327,10 @@ namespace SimpleSoft.IniParser.Tests.Normalization
         [Fact]
         public void GivenANormalizerMergingSectionsWhenTryedToNormalizeSectionCollectionThenDuplicatedWillPass()
         {
-            var normalizer = new IniNormalizer { Options = { MergeOnDuplicatedSections = true } };
+            var normalizer = new IniNormalizer(new IniNormalizationOptions
+            {
+                MergeOnDuplicatedSections = true
+            });
 
             var source = SectionsWithDuplicatedCaseInsensitiveNames;
             var destination = new List<IniSection>();

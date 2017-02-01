@@ -51,7 +51,10 @@ namespace SimpleSoft.IniParser.Tests.Normalization
         [Fact]
         public void GivenANormalizerCaseSensitiveWhenNormalizedPropertyThenNameMustBeOriginal()
         {
-            var normalizer = new IniNormalizer {Options = {IsCaseSensitive = true}};
+            var normalizer = new IniNormalizer(new IniNormalizationOptions
+            {
+                IsCaseSensitive = true
+            });
 
             var source = PropertyForCaseSensitive;
             var result = normalizer.Normalize(source);
@@ -79,7 +82,10 @@ namespace SimpleSoft.IniParser.Tests.Normalization
         [Fact]
         public void GivenANormalizerCaseSensitiveWhenTryedToNormalizePropertyThenNameMustBeOriginal()
         {
-            var normalizer = new IniNormalizer { Options = { IsCaseSensitive = true } };
+            var normalizer = new IniNormalizer(new IniNormalizationOptions
+            {
+                IsCaseSensitive = true
+            });
 
             var source = PropertyForCaseSensitive;
             IniProperty result;
@@ -110,7 +116,10 @@ namespace SimpleSoft.IniParser.Tests.Normalization
         [Fact]
         public void GivenANormalizerIncludingEmptyPropertiesWhenNormalizedPropertyCollectionThenEmptyMustBeKept()
         {
-            var normalizer = new IniNormalizer { Options = { IncludeEmptyProperties = true } };
+            var normalizer = new IniNormalizer(new IniNormalizationOptions
+            {
+                IncludeEmptyProperties = true
+            });
 
             var source = PropertiesWithEmptyValues;
             var destination = new List<IniProperty>();
@@ -136,7 +145,10 @@ namespace SimpleSoft.IniParser.Tests.Normalization
         [Fact]
         public void GivenANormalizerIncludingEmptyPropertiesWhenTryedToNormalizePropertyCollectionThenEmptyMustBeKept()
         {
-            var normalizer = new IniNormalizer {Options = {IncludeEmptyProperties = true}};
+            var normalizer = new IniNormalizer(new IniNormalizationOptions
+            {
+                IncludeEmptyProperties = true
+            });
 
             var source = PropertiesWithEmptyValues;
             var destination = new List<IniProperty>();
@@ -169,7 +181,10 @@ namespace SimpleSoft.IniParser.Tests.Normalization
         [Fact]
         public void GivenANormalizerCaseSensitiveWhenNormalizedPropertyCollectionThenCaseSensitiveKeysWillPass()
         {
-            var normalizer = new IniNormalizer {Options = {IsCaseSensitive = true}};
+            var normalizer = new IniNormalizer(new IniNormalizationOptions
+            {
+                IsCaseSensitive = true
+            });
 
             var source = PropertiesWithDuplicatedCaseInsensitiveKeys;
             var destination = new List<IniProperty>();
@@ -181,7 +196,10 @@ namespace SimpleSoft.IniParser.Tests.Normalization
         [Fact]
         public void GivenANormalizerIgnoringExceptionsWhenNormalizedPropertyCollectionThenDuplicatedWillPass()
         {
-            var normalizer = new IniNormalizer {Options = {ThrowExceptions = false}};
+            var normalizer = new IniNormalizer(new IniNormalizationOptions
+            {
+                ThrowExceptions = false
+            });
 
             var source = PropertiesWithDuplicatedCaseInsensitiveKeys;
             var destination = new List<IniProperty>();
@@ -205,7 +223,10 @@ namespace SimpleSoft.IniParser.Tests.Normalization
         [Fact]
         public void GivenANormalizerCaseSensitiveWhenTryedToNormalizePropertyCollectionThenCaseSensitiveKeysWillPass()
         {
-            var normalizer = new IniNormalizer { Options = { IsCaseSensitive = true } };
+            var normalizer = new IniNormalizer(new IniNormalizationOptions
+            {
+                IsCaseSensitive = true
+            });
 
             var source = PropertiesWithDuplicatedCaseInsensitiveKeys;
             var destination = new List<IniProperty>();
@@ -217,7 +238,10 @@ namespace SimpleSoft.IniParser.Tests.Normalization
         [Fact]
         public void GivenANormalizerIgnoringExceptionsWhenTryedToNormalizePropertyCollectionThenDuplicatedWillPass()
         {
-            var normalizer = new IniNormalizer { Options = { ThrowExceptions = false } };
+            var normalizer = new IniNormalizer(new IniNormalizationOptions
+            {
+                ThrowExceptions = false
+            });
 
             var source = PropertiesWithDuplicatedCaseInsensitiveKeys;
             var destination = new List<IniProperty>();

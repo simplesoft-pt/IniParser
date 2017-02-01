@@ -49,7 +49,10 @@ namespace SimpleSoft.IniParser.Tests.Normalization
         [Fact]
         public void GivenANormalizerWithDefaultOptionsWhenNormalizedContainerThenEmptyGlobalCommentsMustBeKept()
         {
-            var normalizer = new IniNormalizer {Options = {IncludeEmptyComments = true}};
+            var normalizer = new IniNormalizer(new IniNormalizationOptions
+            {
+                IncludeEmptyComments = true
+            });
 
             var source = ContainerForEmptyComments;
             var result = normalizer.Normalize(source);
@@ -81,7 +84,10 @@ namespace SimpleSoft.IniParser.Tests.Normalization
         [Fact]
         public void GivenANormalizerWithDefaultOptionsWhenNormalizedContainerThenEmptyGlobalPropertiesMustBeKept()
         {
-            var normalizer = new IniNormalizer {Options = {IncludeEmptyProperties = true}};
+            var normalizer = new IniNormalizer(new IniNormalizationOptions
+            {
+                IncludeEmptyProperties = true
+            });
 
             var source = ContainerForEmptyProperties;
             var result = normalizer.Normalize(source);
