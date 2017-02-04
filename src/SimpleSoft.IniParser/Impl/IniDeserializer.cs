@@ -105,7 +105,13 @@ namespace SimpleSoft.IniParser.Impl
         /// <returns>The resulting container</returns>
         public IniContainer DeserializeAsContainer(string value)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(value))
+                return null;
+
+            using (var reader = new StringReader(value))
+            {
+                return DeserializeAsContainer(reader);
+            }
         }
 
         /// <summary>
@@ -119,8 +125,7 @@ namespace SimpleSoft.IniParser.Impl
             if (reader == null)
                 throw new ArgumentNullException(nameof(reader));
 
-            var value = reader.ReadToEnd();
-            return DeserializeAsContainer(value);
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -130,13 +135,12 @@ namespace SimpleSoft.IniParser.Impl
         /// <param name="reader">The reader to extract</param>
         /// <param name="ct">The cancellation token</param>
         /// <returns>The resulting container</returns>
-        public async Task<IniContainer> DeserializeAsContainerAsync(TextReader reader, CancellationToken ct)
+        public Task<IniContainer> DeserializeAsContainerAsync(TextReader reader, CancellationToken ct)
         {
             if (reader == null)
                 throw new ArgumentNullException(nameof(reader));
 
-            var value = await reader.ReadToEndAsync();
-            return DeserializeAsContainer(value);
+            throw new NotImplementedException();
         }
     }
 }
