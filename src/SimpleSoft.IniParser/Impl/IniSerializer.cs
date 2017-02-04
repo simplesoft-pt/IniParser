@@ -172,12 +172,14 @@ namespace SimpleSoft.IniParser.Impl
 
         private void AppendSection(StringBuilder builder, IniSection section)
         {
-
             builder.Append('[');
             builder.Append(section.Name);
             builder.AppendLine("]");
 
             AppendCommentsAndProperties(builder, section.Comments, section.Properties);
+
+            if (Options.EmptyLineBetweenSection)
+                builder.AppendLine();
         }
 
         private void AppendCommentsAndProperties(

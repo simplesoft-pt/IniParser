@@ -48,5 +48,10 @@ namespace SimpleSoft.IniParser.Impl
         /// The character used delimit name/value properties. Defaults to <value>'='</value>.
         /// </summary>
         public char PropertyNameValueDelimiter { get; set; } = '=';
+
+        /// <summary>
+        /// Add an empty line between sections? Defaults to <value>false</value>.
+        /// </summary>
+        public bool EmptyLineBetweenSection { get; set; } = false;
     }
 }
