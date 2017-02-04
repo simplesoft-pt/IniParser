@@ -50,8 +50,8 @@ namespace SimpleSoft.IniParser.Impl
         public char PropertyNameValueDelimiter { get; set; } = '=';
 
         /// <summary>
-        /// Add an empty line between sections? Defaults to <value>false</value>.
+        /// Add an empty line before each sections? Defaults to <value>false</value>.
         /// </summary>
-        public bool EmptyLineBetweenSection { get; set; } = false;
+        public bool EmptyLineBeforeSection { get; set; } = false;
     }
 }
