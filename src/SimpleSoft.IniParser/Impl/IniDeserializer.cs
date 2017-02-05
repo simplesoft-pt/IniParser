@@ -26,6 +26,7 @@ using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using SimpleSoft.IniParser.Exceptions;
 
 namespace SimpleSoft.IniParser.Impl
 {
@@ -128,6 +129,7 @@ namespace SimpleSoft.IniParser.Impl
             var container = new IniContainer();
             IniSection currentSection = null;
 
+            var linePosition = 0;
             string line;
             while ((line = reader.ReadLine()?.Trim()) != null)
             {
@@ -156,10 +158,12 @@ namespace SimpleSoft.IniParser.Impl
                     else
                         currentSection.Properties.Add(property);
                 }
-                else
+                else if(Options.FailOnInvalidLines)
                 {
-                    throw new Exception("Invalid line found");
+                    throw new InvalidLineFormatException(linePosition, line);
                 }
+
+                ++linePosition;
             }
 
             return container;

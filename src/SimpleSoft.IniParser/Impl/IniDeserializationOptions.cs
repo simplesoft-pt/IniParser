@@ -48,5 +48,10 @@ namespace SimpleSoft.IniParser.Impl
         /// The character used delimit name/value properties. Defaults to <value>'='</value>.
         /// </summary>
         public char PropertyNameValueDelimiter { get; set; } = '=';
+
+        /// <summary>
+        /// Ignore invalid lines? Defaults to <value>true</value>.
+        /// </summary>
+        public bool FailOnInvalidLines { get; set; } = true;
     }
 }
