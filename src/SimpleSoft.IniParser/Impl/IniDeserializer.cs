@@ -125,7 +125,44 @@ namespace SimpleSoft.IniParser.Impl
             if (reader == null)
                 throw new ArgumentNullException(nameof(reader));
 
-            throw new NotImplementedException();
+            var container = new IniContainer();
+            IniSection currentSection = null;
+
+            string line;
+            while ((line = reader.ReadLine()?.Trim()) != null)
+            {
+                if(CanIgnoreLine(line))
+                    continue;
+
+                string comment;
+                IniSection section;
+                IniProperty property;
+                if (TryExtractComment(line, out comment))
+                {
+                    if (currentSection == null)
+                        container.GlobalComments.Add(comment);
+                    else
+                        currentSection.Comments.Add(comment);
+                }
+                else if(TryExtractSection(line, out section))
+                {
+                    currentSection = section;
+                    container.Sections.Add(currentSection);
+                }
+                else if(TryExtractProperty(line, out property))
+                {
+                    if(currentSection == null)
+                        container.GlobalProperties.Add(property);
+                    else
+                        currentSection.Properties.Add(property);
+                }
+                else
+                {
+                    throw new Exception("Invalid line found");
+                }
+            }
+
+            return container;
         }
 
         /// <summary>
@@ -141,6 +178,56 @@ namespace SimpleSoft.IniParser.Impl
                 throw new ArgumentNullException(nameof(reader));
 
             throw new NotImplementedException();
+        }
+
+        private static bool CanIgnoreLine(string line)
+        {
+            return string.IsNullOrWhiteSpace(line) || line.Length < 2;
+        }
+
+        private bool TryExtractComment(string line, out string comment)
+        {
+            if (line[0] == Options.CommentIndicator)
+            {
+                comment = line.Substring(1, line.Length - 1);
+                return true;
+            }
+
+            comment = null;
+            return false;
+        }
+
+        private static bool TryExtractSection(string line, out IniSection section)
+        {
+            if (line.Length > 2 && line[0] == '[' && line[line.Length - 1] == ']')
+            {
+                section = new IniSection(line.Substring(1, line.Length - 2));
+                return true;
+            }
+
+            section = null;
+            return false;
+        }
+
+        private bool TryExtractProperty(string line, out IniProperty property)
+        {
+            int signIdx;
+            if (line.Length > 1 &&
+                (signIdx = line.IndexOf(
+                    Options.PropertyNameValueDelimiter.ToString(),
+                    StringComparison.OrdinalIgnoreCase)) >= 0)
+            {
+                var name = line.Substring(0, signIdx);
+                var value = signIdx == line.Length - 1
+                    ? null
+                    : line.Substring(signIdx + 1, line.Length - 1 - signIdx);
+
+                property = new IniProperty(name, value);
+                return true;
+            }
+
+            property = null;
+            return false;
         }
     }
 }
