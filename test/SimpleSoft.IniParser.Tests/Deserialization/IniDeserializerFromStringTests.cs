@@ -12,6 +12,9 @@ namespace SimpleSoft.IniParser.Tests.Deserialization
             var container = deserializer.DeserializeAsContainer(StandardNoErrors);
 
             Assert.NotNull(container);
+            Assert.Equal(2, container.GlobalComments.Count);
+            Assert.Equal(2, container.GlobalProperties.Count);
+            Assert.Equal(2, container.Sections.Count);
         }
 
         #region Test Data
