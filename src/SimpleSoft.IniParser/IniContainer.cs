@@ -34,17 +34,17 @@ namespace SimpleSoft.IniParser
         /// <summary>
         /// Global comments
         /// </summary>
-        public ICollection<string> GlobalComments { get; } = new List<string>();
+        public IList<string> GlobalComments { get; } = new List<string>();
 
         /// <summary>
         /// Global properties
         /// </summary>
-        public ICollection<IniProperty> GlobalProperties { get; } = new List<IniProperty>();
+        public IList<IniProperty> GlobalProperties { get; } = new List<IniProperty>();
 
         /// <summary>
         /// The ini container sections
         /// </summary>
-        public ICollection<IniSection> Sections { get; } = new List<IniSection>();
+        public IList<IniSection> Sections { get; } = new List<IniSection>();
 
         /// <summary>
         /// Is the container empty?

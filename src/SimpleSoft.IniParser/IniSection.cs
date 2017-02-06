@@ -56,12 +56,12 @@ namespace SimpleSoft.IniParser
         /// <summary>
         /// The section comments
         /// </summary>
-        public ICollection<string> Comments { get; } = new List<string>();
+        public IList<string> Comments { get; } = new List<string>();
 
         /// <summary>
         /// The section properties
         /// </summary>
-        public ICollection<IniProperty> Properties { get; } = new List<IniProperty>();
+        public IList<IniProperty> Properties { get; } = new List<IniProperty>();
 
         /// <summary>
         /// Is the section empty?
