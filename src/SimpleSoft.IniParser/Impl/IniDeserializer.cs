@@ -187,6 +187,8 @@ namespace SimpleSoft.IniParser.Impl
             throw new NotImplementedException();
         }
 
+        #region Private methods
+
         private static bool CanIgnoreLine(string line)
         {
             return string.IsNullOrWhiteSpace(line) || line.Length < 2;
@@ -236,5 +238,7 @@ namespace SimpleSoft.IniParser.Impl
             property = null;
             return false;
         }
+
+        #endregion
     }
 }
