@@ -179,12 +179,55 @@ namespace SimpleSoft.IniParser.Impl
         /// <param name="reader">The reader to extract</param>
         /// <param name="ct">The cancellation token</param>
         /// <returns>The resulting container</returns>
-        public Task<IniContainer> DeserializeAsContainerAsync(TextReader reader, CancellationToken ct)
+        public async Task<IniContainer> DeserializeAsContainerAsync(TextReader reader, CancellationToken ct)
         {
             if (reader == null)
                 throw new ArgumentNullException(nameof(reader));
 
-            throw new NotImplementedException();
+            var container = new IniContainer();
+            IniSection currentSection = null;
+
+            var linePosition = 0;
+            string line;
+            while ((line = (await reader.ReadLineAsync())?.Trim()) != null)
+            {
+                if (CanIgnoreLine(line))
+                    continue;
+
+                string comment;
+                IniSection section;
+                IniProperty property;
+                if (TryExtractComment(line, out comment))
+                {
+                    if (currentSection == null)
+                        container.GlobalComments.Add(comment);
+                    else
+                        currentSection.Comments.Add(comment);
+                }
+                else if (TryExtractSection(line, out section))
+                {
+                    currentSection = section;
+                    container.Sections.Add(currentSection);
+                }
+                else if (TryExtractProperty(line, out property))
+                {
+                    if (currentSection == null)
+                        container.GlobalProperties.Add(property);
+                    else
+                        currentSection.Properties.Add(property);
+                }
+                else if (Options.FailOnInvalidLines)
+                {
+                    throw new InvalidLineFormatException(linePosition, line);
+                }
+
+                ++linePosition;
+            }
+
+            if (Options.NormalizeAfterDeserialization)
+                container = Normalizer.Normalize(container);
+
+            return container;
         }
 
         #region Private methods
