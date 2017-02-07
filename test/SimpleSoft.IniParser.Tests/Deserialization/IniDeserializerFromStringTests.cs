@@ -37,7 +37,15 @@ namespace SimpleSoft.IniParser.Tests.Deserialization
 
             Assert.NotNull(container);
             Assert.Equal(2, container.GlobalComments.Count);
+            Assert.Equal("gc 01", container.GlobalComments[0]);
+            Assert.Equal("gc 02", container.GlobalComments[1]);
+
             Assert.Equal(2, container.GlobalProperties.Count);
+            Assert.Equal("GP01", container.GlobalProperties[0].Name);
+            Assert.Equal("gp 01 value", container.GlobalProperties[0].Value);
+            Assert.Equal("GP02", container.GlobalProperties[1].Name);
+            Assert.Equal("gp 02 value", container.GlobalProperties[1].Value);
+
             Assert.Equal(2, container.Sections.Count);
         }
 
@@ -46,18 +54,18 @@ namespace SimpleSoft.IniParser.Tests.Deserialization
         private const string StandardNoErrors =
 @";gc 01
 ;gc 02
-GP01=gp 01 value
-GP02=gp 02 value
-[S01]
+gp01=gp 01 value
+gp02=gp 02 value
+[s01]
 ;s01 c01
 ;s01 c02
-S01P01=s01 p01 value
-S01P02=s01 p02 value
-[S02]
+s01p01=s01 p01 value
+s01p02=s01 p02 value
+[s02]
 ;s02 c01
 ;s02 c02
-S02P01=s02 p01 value
-S02P02=s02 p02 value
+s02p01=s02 p01 value
+s02p02=s02 p02 value
 ";
 
         #endregion
