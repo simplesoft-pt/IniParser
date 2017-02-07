@@ -166,6 +166,9 @@ namespace SimpleSoft.IniParser.Impl
                 ++linePosition;
             }
 
+            if (Options.NormalizeAfterDeserialization)
+                container = Normalizer.Normalize(container);
+
             return container;
         }
 
