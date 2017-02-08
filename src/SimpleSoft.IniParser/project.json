@@ -1,5 +1,5 @@
 ﻿{
-  "version": "0.1.0",
+  "version": "1.0.0-rc01",
   "title": "SimpleSoft.IniParser",
   "description": "Parser for files and strings in INI format.",
   "authors": [ "João Simões" ],
