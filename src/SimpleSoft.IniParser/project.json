@@ -3,7 +3,7 @@
   "title": "SimpleSoft.IniParser",
   "description": "Parser for files and strings in INI format.",
   "authors": [ "João Simões" ],
-  "copyright": "Copyright © 2016 João Simões",
+  "copyright": "Copyright © 2017 João Simões",
   "packOptions": {
     "summary": "Parser for files and strings in INI format.",
     "tags": [ "ini", "parser" ],

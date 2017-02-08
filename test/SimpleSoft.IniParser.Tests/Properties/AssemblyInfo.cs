@@ -1,7 +1,7 @@
 ﻿#region License
 // The MIT License (MIT)
 // 
-// Copyright (c) 2016 João Simões
+// Copyright (c) 2017 João Simões
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -34,7 +34,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("SimpleSoft")]
 [assembly: AssemblyProduct("SimpleSoft.IniParser")]
-[assembly: AssemblyCopyright("Copyright © 2016 João Simões")]
+[assembly: AssemblyCopyright("Copyright © 2017 João Simões")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
