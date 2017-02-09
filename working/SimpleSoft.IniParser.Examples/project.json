@@ -5,16 +5,18 @@
   },
 
   "dependencies": {
-    "Microsoft.NETCore.App": {
-      "type": "platform",
-      "version": "1.1.0"
-    }
-
+    "SimpleSoft.IniParser": { "target": "project" }
   },
 
   "frameworks": {
-    "netcoreapp1.0": {
-      "imports": "dnxcore50"
-    }
+    "netcoreapp1.1": {
+      "dependencies": {
+        "Microsoft.NETCore.App": {
+          "type": "platform",
+          "version": "1.1.0"
+        }
+      }
+    },
+    "net4.6.2": { } 
   }
 }
