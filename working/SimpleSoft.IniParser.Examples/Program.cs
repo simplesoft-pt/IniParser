@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Scrutor;
 
 namespace SimpleSoft.IniParser.Examples
 {
@@ -23,6 +24,7 @@ namespace SimpleSoft.IniParser.Examples
 
             foreach (var example in _examples)
             {
+                _logger.LogInformation("Running '{exampleName}'", example.GetType().Name);
                 example.Run();
             }
 
@@ -36,7 +38,15 @@ namespace SimpleSoft.IniParser.Examples
             {
                 var services = new ServiceCollection()
                     .AddLogging()
-                    .AddSingleton<Program>();
+                    .AddSingleton<Program>()
+                    .Scan(scan =>
+                    {
+                        scan.FromAssemblyOf<Program>()
+                            .AddClasses(
+                                classes => classes.AssignableTo<IExample>())
+                            .AsImplementedInterfaces()
+                            .WithSingletonLifetime();
+                    });
 
                 var container = services.BuildServiceProvider(true);
 
