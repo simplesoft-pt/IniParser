@@ -5,6 +5,10 @@
   },
 
   "dependencies": {
+    "Microsoft.Extensions.DependencyInjection": "1.1.0",
+    "Microsoft.Extensions.Logging": "1.1.0",
+    "Microsoft.Extensions.Logging.Console": "1.1.0",
+    "Scrutor": "1.10.0",
     "SimpleSoft.IniParser": { "target": "project" }
   },
 
