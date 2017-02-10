@@ -16,7 +16,6 @@ namespace SimpleSoft.IniParser.Examples
         public void Run()
         {
             const string initialIni = @"
-
 ;This is a comment
 SomeGP=This is a global property
 [SomeSection]
