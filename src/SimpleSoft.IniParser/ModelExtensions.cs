@@ -21,6 +21,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 #endregion
+
+using System;
+
 namespace SimpleSoft.IniParser
 {
     /// <summary>
@@ -28,5 +31,40 @@ namespace SimpleSoft.IniParser
     /// </summary>
     public static class ModelExtensions
     {
+        #region AddComment
+
+        /// <summary>
+        /// Adds a comment to the <see cref="IniContainer"/>.
+        /// </summary>
+        /// <param name="container">The container to use</param>
+        /// <param name="comment">The comment to add</param>
+        /// <returns>The container after changes</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static IniContainer AddComment(this IniContainer container, string comment)
+        {
+            if (container == null) throw new ArgumentNullException(nameof(container));
+
+            container.GlobalComments.Add(comment);
+
+            return container;
+        }
+
+        /// <summary>
+        /// Adds a comment to the <see cref="IniSection"/>.
+        /// </summary>
+        /// <param name="section">The section to use</param>
+        /// <param name="comment">The comment to add</param>
+        /// <returns>The section after changes</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static IniSection AddComment(this IniSection section, string comment)
+        {
+            if (section == null) throw new ArgumentNullException(nameof(section));
+
+            section.Comments.Add(comment);
+
+            return section;
+        }
+
+        #endregion
     }
 }
