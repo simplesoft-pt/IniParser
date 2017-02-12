@@ -102,6 +102,7 @@ namespace SimpleSoft.IniParser
         /// <param name="name">The section name</param>
         /// <returns>The collection of sections with the given name</returns>
         /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentException"></exception>
         public static IEnumerable<IniSection> GetSections(this IniContainer container, string name)
         {
             if (container == null)
@@ -122,6 +123,7 @@ namespace SimpleSoft.IniParser
         /// <param name="name">The section name</param>
         /// <returns>The section instance</returns>
         /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentException"></exception>
         public static IniSection GetOrAddSection(this IniContainer container, string name)
         {
             if (container == null)
@@ -149,6 +151,7 @@ namespace SimpleSoft.IniParser
         /// <param name="name">The section name</param>
         /// <returns>True if section removed, otherwise false</returns>
         /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentException"></exception>
         public static bool RemoveSection(this IniContainer container, string name)
         {
             if (container == null)
@@ -183,6 +186,7 @@ namespace SimpleSoft.IniParser
         /// <param name="name">The section name</param>
         /// <returns>True if any section removed, otherwise false</returns>
         /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentException"></exception>
         public static bool RemoveSections(this IniContainer container, string name)
         {
             if (container == null)
@@ -204,6 +208,27 @@ namespace SimpleSoft.IniParser
                 container.Sections.RemoveAt(idx);
 
             return true;
+        }
+
+        /// <summary>
+        /// Checks it the <see cref="IniContainer.Sections"/> collections 
+        /// has a section with the given name.
+        /// </summary>
+        /// <param name="container">The container</param>
+        /// <param name="name">The section name</param>
+        /// <returns>True if section found, otherwise false</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentException"></exception>
+        public static bool ContainsSection(this IniContainer container, string name)
+        {
+            if (container == null)
+                throw new ArgumentNullException(nameof(container));
+            if (name == null)
+                throw new ArgumentNullException(nameof(name));
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("Value cannot be whitespace.", nameof(name));
+
+            return container.Sections.Any(e => e.Name.Equals(name));
         }
 
         #endregion
