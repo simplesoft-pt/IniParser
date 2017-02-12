@@ -81,10 +81,15 @@ namespace SimpleSoft.IniParser
         /// <param name="name">The section name</param>
         /// <returns>The first section with the given name, or null</returns>
         /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentException"></exception>
         public static IniSection GetSection(this IniContainer container, string name)
         {
             if (container == null)
                 throw new ArgumentNullException(nameof(container));
+            if (name == null)
+                throw new ArgumentNullException(nameof(name));
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("Value cannot be whitespace.", nameof(name));
 
             return container.Sections.FirstOrDefault(e => e.Name.Equals(name));
         }
@@ -101,6 +106,10 @@ namespace SimpleSoft.IniParser
         {
             if (container == null)
                 throw new ArgumentNullException(nameof(container));
+            if (name == null)
+                throw new ArgumentNullException(nameof(name));
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("Value cannot be whitespace.", nameof(name));
 
             return container.Sections.Where(e => e.Name.Equals(name));
         }
@@ -117,6 +126,10 @@ namespace SimpleSoft.IniParser
         {
             if (container == null)
                 throw new ArgumentNullException(nameof(container));
+            if (name == null)
+                throw new ArgumentNullException(nameof(name));
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("Value cannot be whitespace.", nameof(name));
 
             var section = container.GetSection(name);
             if (section != null)
@@ -126,6 +139,71 @@ namespace SimpleSoft.IniParser
             container.Sections.Add(section);
 
             return section;
+        }
+
+        /// <summary>
+        /// Removes the first section with the given name from the 
+        /// <see cref="IniContainer.Sections"/> collection.
+        /// </summary>
+        /// <param name="container">The container</param>
+        /// <param name="name">The section name</param>
+        /// <returns>True if section removed, otherwise false</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static bool RemoveSection(this IniContainer container, string name)
+        {
+            if (container == null)
+                throw new ArgumentNullException(nameof(container));
+            if (name == null)
+                throw new ArgumentNullException(nameof(name));
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("Value cannot be whitespace.", nameof(name));
+
+            var idxToRemove = -1;
+            for (var i = 0; i < container.Sections.Count; i++)
+            {
+                if (container.Sections[i].Name.Equals(name))
+                {
+                    idxToRemove = i;
+                    break;
+                }
+            }
+
+            if (idxToRemove == -1)
+                return false;
+
+            container.Sections.RemoveAt(idxToRemove);
+            return true;
+        }
+
+        /// <summary>
+        /// Removes all sections with the given name from the 
+        /// <see cref="IniContainer.Sections"/> collection.
+        /// </summary>
+        /// <param name="container">The container</param>
+        /// <param name="name">The section name</param>
+        /// <returns>True if any section removed, otherwise false</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static bool RemoveSections(this IniContainer container, string name)
+        {
+            if (container == null)
+                throw new ArgumentNullException(nameof(container));
+            if (name == null)
+                throw new ArgumentNullException(nameof(name));
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("Value cannot be whitespace.", nameof(name));
+
+            var indexesToRemove = new List<int>(container.Sections.Count);
+            for (var i = container.Sections.Count - 1; i >= 0; i--)
+                if (container.Sections[i].Name.Equals(name))
+                    indexesToRemove.Add(i);
+
+            if (indexesToRemove.Count == 0)
+                return false;
+
+            foreach (var idx in indexesToRemove)
+                container.Sections.RemoveAt(idx);
+
+            return true;
         }
 
         #endregion
