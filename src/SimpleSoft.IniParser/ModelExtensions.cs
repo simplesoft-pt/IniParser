@@ -23,6 +23,8 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SimpleSoft.IniParser
 {
@@ -31,7 +33,7 @@ namespace SimpleSoft.IniParser
     /// </summary>
     public static class ModelExtensions
     {
-        #region AddComment
+        #region Comments
 
         /// <summary>
         /// Adds a comment to the <see cref="IniContainer"/>.
@@ -42,7 +44,8 @@ namespace SimpleSoft.IniParser
         /// <exception cref="ArgumentNullException"></exception>
         public static IniContainer AddComment(this IniContainer container, string comment)
         {
-            if (container == null) throw new ArgumentNullException(nameof(container));
+            if (container == null)
+                throw new ArgumentNullException(nameof(container));
 
             container.GlobalComments.Add(comment);
 
@@ -58,9 +61,69 @@ namespace SimpleSoft.IniParser
         /// <exception cref="ArgumentNullException"></exception>
         public static IniSection AddComment(this IniSection section, string comment)
         {
-            if (section == null) throw new ArgumentNullException(nameof(section));
+            if (section == null)
+                throw new ArgumentNullException(nameof(section));
 
             section.Comments.Add(comment);
+
+            return section;
+        }
+
+        #endregion
+
+        #region Sections
+
+        /// <summary>
+        /// Gets the first section with the given name from the 
+        /// <see cref="IniContainer.Sections"/> collection.
+        /// </summary>
+        /// <param name="container">The container</param>
+        /// <param name="name">The section name</param>
+        /// <returns>The first section with the given name, or null</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static IniSection GetSection(this IniContainer container, string name)
+        {
+            if (container == null)
+                throw new ArgumentNullException(nameof(container));
+
+            return container.Sections.FirstOrDefault(e => e.Name.Equals(name));
+        }
+
+        /// <summary>
+        /// Gets all sections with the given name from the 
+        /// <see cref="IniContainer.Sections"/> collection.
+        /// </summary>
+        /// <param name="container">The container</param>
+        /// <param name="name">The section name</param>
+        /// <returns>The collection of sections with the given name</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static IEnumerable<IniSection> GetSections(this IniContainer container, string name)
+        {
+            if (container == null)
+                throw new ArgumentNullException(nameof(container));
+
+            return container.Sections.Where(e => e.Name.Equals(name));
+        }
+
+        /// <summary>
+        /// Gets a section from the <see cref="IniContainer"/> or adds
+        /// a new section if none exists.
+        /// </summary>
+        /// <param name="container">The container to use</param>
+        /// <param name="name">The section name</param>
+        /// <returns>The section instance</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static IniSection GetOrAddSection(this IniContainer container, string name)
+        {
+            if (container == null)
+                throw new ArgumentNullException(nameof(container));
+
+            var section = container.GetSection(name);
+            if (section != null)
+                return section;
+
+            section = new IniSection(name);
+            container.Sections.Add(section);
 
             return section;
         }
