@@ -1,9 +1,5 @@
 # SimpleSoft.IniParser
-Library implemented in .NET using C# that helps developers to deserialize or serialize INI files and strings. This is a very small library with threem main principles:
-
-* `IIniDeserializer` - interface that provides methods to deserialize strings or files into `IniContainer` instances. Implemented by `IniDeserializer` and can be configured using an `IniDeserializationOptions`;
-* `IIniSerializer` - interface that provides methods to serialize `IniContainer` instances into strings or files. Implemented by `IniSerializer` and can be configured using an `IniSerializationOptions`;
-* `IIniNormalizer` - interface that provides methods normalize `IniProperty`, `IniSection`, `IniContainer` instances, making sure they meet the standard. Implemented by `IniSerializer` and can be configured using an `IniSerializationOptions`;
+Library implemented in .NET using C# that helps developers to deserialize or serialize INI files and strings.
 
 ## Installation 
 This library can be installed via [NuGet](https://www.nuget.org/packages/SimpleSoft.IniParser) package. Just run the following command:
