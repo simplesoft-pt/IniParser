@@ -1,6 +1,6 @@
 # SimpleSoft.IniParser
 Library implemented in .NET using C# that helps developers to deserialize or serialize INI files and strings.
-It is compatible with a large range of .NET framework version, from desktop, to mobile and servers.
+It is compatible with a large range of .NET framework versions, from desktop, to mobile and servers.
 
 ## Installation 
 This library can be installed via [NuGet](https://www.nuget.org/packages/SimpleSoft.IniParser) package. Just run the following command:
